@@ -7,6 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
+use app\models\RegisterForm;
 use app\models\ContactForm;
 
 class SiteController extends Controller
@@ -60,8 +61,40 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $this->layout = 'admin';
         return $this->render('index');
     }
+
+     /**
+     * Register action.
+     *
+     * @return string
+     */
+    public function actionRegister()
+    {
+        // if (!Yii::$app->user->isGuest) {
+        //     return $this->goHome();
+        // }
+
+        // $model = new RegisterForm();
+        // if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        //     return $this->goBack();
+        // }
+        // return $this->render('register', [
+        //     'model' => $model,
+        // ]);
+        $model = new RegisterForm();
+        if ($model->load(Yii::$app->request->post())) {
+            Yii::$app->session->setFlash('registerFormSubmitted');
+
+            return $this->refresh();
+        }
+
+        return $this->render('register', [
+            'model' => $model,
+        ]);
+    }
+
 
     /**
      * Login action.
@@ -122,4 +155,5 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
 }

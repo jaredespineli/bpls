@@ -15,12 +15,11 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'payment_id')->textInput(['readonly' => true, 'value' => $model->payment_id]) ?>
     <?= $form->field($model, 'assessment_id')->textInput(['readonly' => true, 'value' => $model->assessment_id]) ?>
     <?= $form->field($model, 'grand_total')->textInput() ?>
-    <?= $form->field($model, 'or_number')->textInput() ?>
 
-
+    <?= $form->field($model, 'payment_kind')->radioList(array('Quarterly'=>'Quarterly', 'Bi-Annually'=>'Bi-Annually', 'Annually'=>'Annually')); ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Pay Now', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton('Pay Now', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

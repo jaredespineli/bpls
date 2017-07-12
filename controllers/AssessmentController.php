@@ -105,6 +105,7 @@ class AssessmentController extends Controller
                 $model_pay = new Payment(); //all created payment will have default payment status of unpaid
                 $model_pay->assessment_id = $model->assessment_id;
                 $model_pay->business_name = $model->business_name;
+                $model_pay->president_name = $model->president_name;
                 $model_pay->payment_status = 'Unpaid';
                 $model_pay->save();
 

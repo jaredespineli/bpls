@@ -73,6 +73,8 @@ class PaymentController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->payment_id]);
         } else {
+
+
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -88,13 +90,27 @@ class PaymentController extends Controller
     public function actionUpdate($id)
     {
         $this->layout = 'admin';
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->payment_status = 'Paid';
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->payment_id]);
+            //$model->payment_status = 'Paid';\
+
+            
+             if(trim($model->payment_kind, " ") == 'Annually'){
+                 $model->payment_status = "Paid";
+                 $model->save();
+                 return $this->redirect(['annually', 'id' => $model->payment_id]);                 
+             }
+                elseif(trim($model->payment_kind, " ") == 'Bi-Annually'){
+                 $model->payment_status = "Paid";
+                 $model->assessed_value = $model->grand_total/2;   
+                 $model->save();
+                 return $this->redirect(['paymentoptionsbiannually', 'id' => $model->payment_id]);      
+                }            
+            // return $this->redirect(['view', 'id' => $model->payment_id]);
         } else {
+            // var_dump($model);
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -119,14 +135,79 @@ class PaymentController extends Controller
     {
         $model = $this->findModel($id);
 
-        $modelProperty = Property::find()
-                ->where(['td_no' => $model->td_no])
+        $modelPayment = Property::find()
+                ->where(['business_id' => $model->business_id])
                 ->all();
 
-         $modelOwner = Owner::find()
-                ->where(['td_no' => $model->td_no])
+        $modelOwner = Owner::find()
+                ->where(['business_id' => $model->business_id])
                 ->all();
     }
+
+    // public function actionQuarterly($id)
+    // {
+    //     $model = $this->findModel($id);
+
+    //     $modelPayment = Payment::find()
+    //             ->where(['assessment_id' => $model->assessment_id])
+    //             ->all();        
+
+    //     return $this->render('quarterly', [
+    //             'model' => $model,
+    //             'modelPayment' => $modelPayment,
+    //         ]);
+    // }
+
+    public function actionAnnually($id)
+    {        
+        $this->layout = 'admin';
+        $modelPayment = $this->findModel($id);  
+
+        return $this->render('annually', [                
+                'modelPayment' => $modelPayment,
+            ]);
+    }
+
+    public function actionBiAnnually($id)
+    {        
+        $this->layout = 'admin';
+        $modelPayment = $this->findModel($id);  
+
+        return $this->render('biannually', [                
+                'modelPayment' => $modelPayment,
+            ]);
+    }
+
+    public function actionPaymentoptionsbiannually($id)
+    {        
+        $this->layout = 'admin';
+        $modelPayment = $this->findModel($id);  
+
+        if ($modelPayment->load(Yii::$app->request->post())) {
+            $modelPayment->save();
+             return $this->redirect(['biannually', 'id' => $modelPayment->payment_id]);
+        }else{
+            return $this->render('paymentoptionsbiannually', [                
+                'modelPayment' => $modelPayment,
+            ]);
+        }
+        
+    }
+
+    // public function actionPaymentoptionsbiannually($id)
+    // {        
+    //     $this->layout = 'admin';
+    //     $modelPayment = $this->findModel($id);  
+
+    //     if ($modelPayment->load(Yii::$app->request->post()) && $modelPayment->save()) {
+    //         return $this->redirect(['biannually', 'id' => $modelPayment->payment_id]);
+    //     } else {
+    //             return $this->render('paymentoptionsbiannually', [
+    //                 'modelPayment' => $modelPayment,
+    //             ]);
+    //     }
+    // }
+
 
     /**
      * Finds the Payment model based on its primary key value.

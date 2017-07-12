@@ -22,6 +22,8 @@ use app\assets\AppAsset;
                     'items' => [
                         ['label' => 'Taxpayer Profile', 'icon' => 'user', 'url' =>['taxpayer/index']],
                         ['label' => 'Manage Business', 'icon' => 'user', 'url' =>['business/index']],
+                        ['label' => 'Manage Assessment', 'icon' => 'user', 'url' =>['assessment/index']],
+                        ['label' => 'Manage Payment', 'icon' => 'user', 'url' =>['payment/index']],                                                      
                     ]
                 ]);
             ?>

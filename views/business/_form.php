@@ -48,8 +48,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'property_index_num')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'has_lessor')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'lessor_business_id')->textInput() ?>
 
     <?= $form->field($model, 'business_area')->textInput() ?>

@@ -3,17 +3,18 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Business;
-use app\models\BusinessSearch;
+use app\models\Payment;
+use app\models\PaymentSearch;
+use app\models\Assessment;
+use app\models\AssessmentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\Assessment;
 
 /**
- * BusinessController implements the CRUD actions for Business model.
+ * PaymentController implements the CRUD actions for Payment model.
  */
-class BusinessController extends Controller
+class PaymentController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,13 +32,13 @@ class BusinessController extends Controller
     }
 
     /**
-     * Lists all Business models.
+     * Lists all Payment models.
      * @return mixed
      */
     public function actionIndex()
     {
         $this->layout = 'admin';
-        $searchModel = new BusinessSearch();
+        $searchModel = new PaymentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,7 +48,7 @@ class BusinessController extends Controller
     }
 
     /**
-     * Displays a single Business model.
+     * Displays a single Payment model.
      * @param integer $id
      * @return mixed
      */
@@ -60,23 +61,17 @@ class BusinessController extends Controller
     }
 
     /**
-     * Creates a new Business model.
+     * Creates a new Payment model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
         $this->layout = 'admin';
-        $model = new Business();
+        $model = new Payment();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-            $modelAssess = new Assessment();
-            $modelAssess->business_id = $model->business_id;
-            $modelAssess->business_name = $model->business_name;
-            $modelAssess->save();
-
-            return $this->redirect(['view', 'id' => $model->business_id]);
+            return $this->redirect(['view', 'id' => $model->payment_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -85,7 +80,7 @@ class BusinessController extends Controller
     }
 
     /**
-     * Updates an existing Business model.
+     * Updates an existing Payment model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -95,8 +90,10 @@ class BusinessController extends Controller
         $this->layout = 'admin';
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->business_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->payment_status = 'Paid';
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->payment_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -105,7 +102,7 @@ class BusinessController extends Controller
     }
 
     /**
-     * Deletes an existing Business model.
+     * Deletes an existing Payment model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -118,16 +115,29 @@ class BusinessController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionPayment($id)
+    {
+        $model = $this->findModel($id);
+
+        $modelProperty = Property::find()
+                ->where(['td_no' => $model->td_no])
+                ->all();
+
+         $modelOwner = Owner::find()
+                ->where(['td_no' => $model->td_no])
+                ->all();
+    }
+
     /**
-     * Finds the Business model based on its primary key value.
+     * Finds the Payment model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Business the loaded model
+     * @return Payment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Business::findOne($id)) !== null) {
+        if (($model = Payment::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -7,6 +7,8 @@ use app\models\Payment;
 use app\models\PaymentSearch;
 use app\models\Assessment;
 use app\models\AssessmentSearch;
+use app\models\Business;
+use app\models\BusinessSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -94,28 +96,25 @@ class PaymentController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            //$model->payment_status = 'Paid';\
-
             
              if(trim($model->payment_kind, " ") == 'Annually'){
                  $model->payment_status = "Paid";
                  $model->save();
                  return $this->redirect(['annually', 'id' => $model->payment_id]);                 
-             }
-                elseif(trim($model->payment_kind, " ") == 'Bi-Annually'){
-                 $model->payment_status = "Paid";
-                 $model->assessed_value = $model->grand_total/2;   
-                 $model->save();
-                 return $this->redirect(['paymentoptionsbiannually', 'id' => $model->payment_id]);      
-                }            
-            // return $this->redirect(['view', 'id' => $model->payment_id]);
+             }                
+                elseif(trim($model->payment_kind, " ") == 'Quarterly'){
+                    $model->save();
+                    return $this->redirect(['payoptionqu', 'id' => $model->payment_id]); 
+                }
+                    else{
+                        echo "hello";
+                    }                       
         } else {
             // var_dump($model);
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->render('update', ['model' => $model]);
         }
     }
+
 
     /**
      * Deletes an existing Payment model.
@@ -144,19 +143,6 @@ class PaymentController extends Controller
                 ->all();
     }
 
-    // public function actionQuarterly($id)
-    // {
-    //     $model = $this->findModel($id);
-
-    //     $modelPayment = Payment::find()
-    //             ->where(['assessment_id' => $model->assessment_id])
-    //             ->all();        
-
-    //     return $this->render('quarterly', [
-    //             'model' => $model,
-    //             'modelPayment' => $modelPayment,
-    //         ]);
-    // }
 
     public function actionAnnually($id)
     {        
@@ -168,31 +154,110 @@ class PaymentController extends Controller
             ]);
     }
 
-    public function actionBiAnnually($id)
+    public function actionQuarterly($id)
     {        
         $this->layout = 'admin';
-        $modelPayment = $this->findModel($id);  
 
-        return $this->render('biannually', [                
+        $modelPayment = $this->findModel($id);
+        $arrayQuarter = array();
+
+        return $this->render('quarterly', [                
                 'modelPayment' => $modelPayment,
+                'arrayQuarter' => $arrayQuarter,
             ]);
     }
 
-    public function actionPaymentoptionsbiannually($id)
-    {        
+    public function actionPayoptionqu($id){
         $this->layout = 'admin';
         $modelPayment = $this->findModel($id);  
+        $quarter_assessment = $modelPayment->grand_total/4;
+        $prevQuarter = $modelPayment->payment_quarter;
+        $arrayQuarter = array();
 
-        if ($modelPayment->load(Yii::$app->request->post())) {
-            $modelPayment->save();
-             return $this->redirect(['biannually', 'id' => $modelPayment->payment_id]);
-        }else{
-            return $this->render('paymentoptionsbiannually', [                
-                'modelPayment' => $modelPayment,
-            ]);
-        }
+         if ($modelPayment->load(Yii::$app->request->post())) {        
+            //$modelPayment->save();
+                if(is_null($modelPayment->payment_quarter)){
+                    throw new NotFoundHttpException('Please make sure to choose a quarter to pay for.');
+                }
+                    else{
+                        if(is_null($prevQuarter)){
+                            for($i=0; $i<$modelPayment->payment_quarter; $i++){
+                                $arrayQuarter[$i]["payment_status"] = 'Paid';
+                                $arrayQuarter[$i]["quarter_assessment"] = $quarter_assessment;
+                                $arrayQuarter[$i]["payment_quarter"] = $i+1;
+
+                            }
+                            for($i=$modelPayment->payment_quarter; $i<4; $i++){
+                                $arrayQuarter[$i]["payment_status"] = 'Unpaid'; 
+                                $arrayQuarter[$i]["quarter_assessment"] = $quarter_assessment;    
+                                $arrayQuarter[$i]["payment_quarter"] = $i+1; 
+                            }
+
+                                if($modelPayment->payment_quarter == 4){    
+                                    $modelPayment->payment_status = 'Paid';
+                                } 
+
+                            $modelPayment->save(); 
+
+                            return $this->render('quarterly', ['modelPayment' => $modelPayment, 'arrayQuarter' => $arrayQuarter]);      
+                        }else{
+                            if($prevQuarter < $modelPayment->payment_quarter){
+                                $arrayQuarter =  array();
+
+                                for($i=0; $i<$modelPayment->payment_quarter; $i++){
+                                    $arrayQuarter[$i]["payment_status"] = 'Paid';
+                                    $arrayQuarter[$i]["quarter_assessment"] = $quarter_assessment;
+                                    $arrayQuarter[$i]["payment_quarter"] = $i+1;
+                                }
+                                for($i=$modelPayment->payment_quarter; $i<4; $i++){
+                                    $arrayQuarter[$i]["payment_status"] = 'Unpaid';
+                                    $arrayQuarter[$i]["quarter_assessment"] = $quarter_assessment;
+                                    $arrayQuarter[$i]["payment_quarter"] = $i+1;
+                                } 
+                                    if($modelPayment->payment_quarter == 4){    
+                                        $modelPayment->payment_status = 'Paid';
+                                    }
+
+                                $modelPayment->save(); 
+
+                                return $this->render('quarterly', ['modelPayment' => $modelPayment, 'arrayQuarter' => $arrayQuarter]); 
+                            }else{
+                                return $this->render('payoptionqu', ['modelPayment' => $modelPayment]);                            
+                            }     
+                        }
+                    }
+                    return $this->render('payoptionqu', ['modelPayment' => $modelPayment]);
+         } else {
+            return $this->render('payoptionqu', ['modelPayment' => $modelPayment]);  
+         }
+    }
+
+
+    // public function actionBiAnnually($id)
+    // {        
+    //     $this->layout = 'admin';
+    //     $modelPayment = $this->findModel($id);  
+
+    //     return $this->render('biannually', [                
+    //             'modelPayment' => $modelPayment,
+    //         ]);
+    // }
+
+    // public function actionPaymentoptionsbiannually($id)
+    // {        
+    //     $this->layout = 'admin';
+    //     $modelPayment = $this->findModel($id);  
+
+    //     if ($modelPayment->load(Yii::$app->request->post())) {
+    //         $modelPayment->save();
+    //          return $this->redirect(['biannually', 'id' => $modelPayment->payment_id]);
+    //     }else{
+    //         return $this->render('paymentoptionsbiannually', [                
+    //             'modelPayment' => $modelPayment,
+    //         ]);
+    //     }
         
-    }
+    // }
 
     // public function actionPaymentoptionsbiannually($id)
     // {        

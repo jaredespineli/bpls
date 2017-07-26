@@ -11,8 +11,8 @@ use yii\widgets\ActiveForm;
 <div class="assessment-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'capital_amount')->textInput() ?>
+    
+    <?= $form->field($model, 'capital_amount')->textInput(['readonly' => true, 'value' => $model->capital_amount]) ?>
 
     <?= $form->field($model, 'gross_sales_tax_amt')->textInput() ?>
 

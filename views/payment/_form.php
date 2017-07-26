@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'payment_id')->textInput(['readonly' => true, 'value' => $model->payment_id]) ?>
     <?= $form->field($model, 'assessment_id')->textInput(['readonly' => true, 'value' => $model->assessment_id]) ?>
-    <?= $form->field($model, 'grand_total')->textInput() ?>
+    <?= $form->field($model, 'grand_total')->textInput(['readonly' => true, 'value' => $model->grand_total]) ?>
 
     <?= $form->field($model, 'payment_kind')->radioList(array('Quarterly'=>'Quarterly', 'Bi-Annually'=>'Bi-Annually', 'Annually'=>'Annually')); ?>
 

@@ -27,7 +27,8 @@ class Payment extends \yii\db\ActiveRecord
     {
         return [
             [['assessment_id', 'or_number', 'payment_quarter', 'payment_annually', 'payment_bi_annually', 'grand_total', 'assessed_value'], 'integer'],
-            [['business_name', 'president_name', 'payment_status', 'payment_kind'], 'safe']
+            [['business_name', 'president_name', 'payment_status', 'payment_kind'], 'safe'],
+            [['assessed_value'], 'number']
         ];
     }
 
@@ -42,6 +43,13 @@ class Payment extends \yii\db\ActiveRecord
             'or_number' => 'Official Receipt Number',
             'business_name' => 'Business Name',
             'president_name' => 'Property Owner',
+            'payment_quarter' => 'Payment(Quarterly)',
+            'payment_annually' => 'Payment(Annually)',
+            'payment_bi_annually' => 'Payment(Bi-Annually)',
+            'grand_total' => 'Grand Total',
+            'assessed_value' => 'Assessed Value',
+            'payment_status' => 'Payment Status',
+            'payment_kind' => 'Type of Payment',
         ];
     }
 }

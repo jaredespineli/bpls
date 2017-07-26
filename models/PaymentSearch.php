@@ -19,6 +19,7 @@ class PaymentSearch extends Payment
     {
         return [
             [['payment_id', 'assessment_id'], 'integer'],
+            [['assessed_value'], 'number']
         ];
     }
 

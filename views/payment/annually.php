@@ -32,6 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
     	<h3><?= Html::encode('Statement of Account: ' . $this->title) ?></h3>
 	</div>
 
+    <div>
+        <?php 
+        if(trim($modelPayment->payment_status, " ") != 'Paid'){ ?>
+           <p style="float: right;"> 
+                <?= Html::a('Pay Now', ['annually', 'id' => $modelPayment->payment_id], ['class' => 'btn btn-primary'])?>             
+           </p>
+        <?php } ?>
+    </div>
+
 <br/>
 <br/>
 <br/>

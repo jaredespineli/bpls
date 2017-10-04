@@ -64,8 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             echo "<tr>";            
             echo "<td>" . $modelPayment->payment_kind . "</td>";
             echo "<td>" . $arrayQuarter[$counter]["payment_quarter"] . "</td>";           
-            echo "<td>" . $arrayQuarter[$counter]["quarter_assessment"] . "</td>";
-            // echo "<td>" . $arrayQuarter[$counter]->total_amount . "</td>";
+            echo "<td>" . $arrayQuarter[$counter]["quarter_assessment"] . "</td>";            
             echo "<td>" . $arrayQuarter[$counter]["payment_status"] . "</td>";
             echo "</tr>";
         }

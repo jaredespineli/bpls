@@ -26,9 +26,9 @@ class Payment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['assessment_id', 'or_number', 'payment_quarter', 'payment_annually', 'payment_bi_annually', 'grand_total', 'assessed_value'], 'integer'],
+            [['assessment_id', 'or_number', 'payment_quarter', 'payment_annually', 'payment_bi_annually'], 'integer'],
             [['business_name', 'president_name', 'payment_status', 'payment_kind'], 'safe'],
-            [['assessed_value'], 'number']
+            [['grand_total', 'assessed_value'], 'number']
         ];
     }
 

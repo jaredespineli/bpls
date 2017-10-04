@@ -71,6 +71,11 @@ class AssessmentController extends Controller
     {
         $this->layout = 'admin';
         $model = new Assessment();
+        $model = $this->findModel($id);
+        
+        // $modelBusiness = Business::find()
+        //     ->where(['business_id' => $model->business_id])
+
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->assessment_id]);
@@ -105,9 +110,10 @@ class AssessmentController extends Controller
                 $model_pay = new Payment(); //all created payment will have default payment status of unpaid
                 $model_pay->assessment_id = $model->assessment_id;
                 $model_pay->business_name = $model->business_name;
-                $model_pay->president_name = $model->president_name;                
+                $model_pay->president_name = $model->president_name;
+                $model_pay->grand_total = $model->grand_total;                                
                 $model_pay->payment_status = 'Unpaid';
-                $model_pay->save();
+                $model_pay->save();                
 
             }
 

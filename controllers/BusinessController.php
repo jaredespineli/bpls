@@ -74,6 +74,8 @@ class BusinessController extends Controller
             $modelAssess = new Assessment();
             $modelAssess->business_id = $model->business_id;
             $modelAssess->business_name = $model->business_name;
+            $modelAssess->capital_amount = $model->capital_amount;
+            $modelAssess->president_name = $model->president_name;
             $modelAssess->save();
 
             return $this->redirect(['view', 'id' => $model->business_id]);

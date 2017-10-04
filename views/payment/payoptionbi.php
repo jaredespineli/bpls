@@ -1,32 +1,23 @@
 <?php
 
-use yii/helpers/Html;
-use yii/grid/GridView;
-use yii/helpers/Url;
-use yii/widgets/ActiveForm;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Payment */
 /* @var $form yii\widgets\ActiveForm */
-
-$this->title = 'Payment Options';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="payment-options-bi-annually">
+<div class="payment-option-biannually">
 
-	<h3><?= Html::encode($this->title)?></h3>
+    <?php $form = ActiveForm::begin(); ?>
 
-	<br>
+    <?= $form->field($modelPayment, 'payment_bi_annually')->radioList(array('1'=>'First Half', '2'=>'Second Half')); ?>
 
-	<?= $form = ActiveForm::begin(); ?>
+    <div class="form-group">
+        <?= Html::submitButton('Pay Now', ['class' => 'btn btn-success']) ?>
+    </div>
 
-	<?= $form->field($modelPayment, 'payment_bi_annually')->radioList(
-		array(1 => 'First Half', 2 => 'Second Half')
-		); ?>
-
-	<?= Html::submitButton('Save', ['class' =>'btn btn-success']) ?>
-
-	<?php ActiveForm::end(); ?>	
+    <?php ActiveForm::end(); ?>
 
 </div>

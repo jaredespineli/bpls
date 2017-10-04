@@ -106,6 +106,10 @@ class PaymentController extends Controller
                     $model->save();
                     return $this->redirect(['payoptionqu', 'id' => $model->payment_id]); 
                 }
+                elseif(trim($model->payment_kind, " ") == 'Bi-Annually'){
+                    $model->save();
+                    return $this->redirect(['payoptionbi', 'id' => $model->payment_id]); 
+                }
                     else{
                         echo "hello";
                     }                       
@@ -147,10 +151,11 @@ class PaymentController extends Controller
     public function actionAnnually($id)
     {        
         $this->layout = 'admin';
-        $modelPayment = $this->findModel($id);  
+        
+        $modelPayment = $this->findModel($id); 
 
         return $this->render('annually', [                
-                'modelPayment' => $modelPayment,
+                'modelPayment' => $modelPayment,                
             ]);
     }
 
@@ -165,6 +170,27 @@ class PaymentController extends Controller
                 'modelPayment' => $modelPayment,
                 'arrayQuarter' => $arrayQuarter,
             ]);
+    }
+
+    public function actionBiannually($id)
+    {        
+        $this->layout = 'admin';
+
+        $modelPayment = $this->findModel($id);
+        $arrayHalf = array();
+
+        return $this->render('biannually', [                
+                'modelPayment' => $modelPayment,
+                'arrayHalf' => $arrayHalf,
+            ]);
+    }
+
+    public function actionPayoptionan($id){
+        $this->layout = 'admin';
+        $modelPayment = $this->findModel($id);  
+        $annually_assessment = $modelPayment->grand_total; 
+
+        return $this->render('annually', ['modelPayment' => $modelPayment]);       
     }
 
     public function actionPayoptionqu($id){
@@ -233,46 +259,62 @@ class PaymentController extends Controller
     }
 
 
-    // public function actionBiAnnually($id)
-    // {        
-    //     $this->layout = 'admin';
-    //     $modelPayment = $this->findModel($id);  
+    public function actionPayoptionbi($id)
+    {        
+        $this->layout = 'admin';
+        $modelPayment = $this->findModel($id);
+        $biannually_assessment = $modelPayment->grand_total/2;
+        $prevHalf = $modelPayment->payment_bi_annually;
+        $arrayHalf = array();  
 
-    //     return $this->render('biannually', [                
-    //             'modelPayment' => $modelPayment,
-    //         ]);
-    // }
+        if ($modelPayment->load(Yii::$app->request->post())) {        
+            //$modelPayment->save();
+                if(is_null($modelPayment->payment_bi_annually)){
+                    throw new NotFoundHttpException('Please make sure to choose a which half to pay for.');
+                }
+                    else{
+                        if(is_null($prevHalf)){
+                            echo "hello";
+                            for($i=0; $i<$modelPayment->payment_bi_annually; $i++){
+                                $arrayHalf[$i]["payment_status"] = 'Paid';
+                                $arrayHalf[$i]["biannually_assessment"] = $biannually_assessment;
+                                $arrayHalf[$i]["payment_bi_annually"] = $i+1;
 
-    // public function actionPaymentoptionsbiannually($id)
-    // {        
-    //     $this->layout = 'admin';
-    //     $modelPayment = $this->findModel($id);  
+                            }                            
+                                if($modelPayment->payment_bi_annually == 2){    
+                                    $modelPayment->payment_status = 'Paid';
+                                } 
 
-    //     if ($modelPayment->load(Yii::$app->request->post())) {
-    //         $modelPayment->save();
-    //          return $this->redirect(['biannually', 'id' => $modelPayment->payment_id]);
-    //     }else{
-    //         return $this->render('paymentoptionsbiannually', [                
-    //             'modelPayment' => $modelPayment,
-    //         ]);
-    //     }
-        
-    // }
+                            $modelPayment->save(); 
 
-    // public function actionPaymentoptionsbiannually($id)
-    // {        
-    //     $this->layout = 'admin';
-    //     $modelPayment = $this->findModel($id);  
+                            return $this->render('biannually', ['modelPayment' => $modelPayment, 'arrayHalf' => $arrayHalf]);      
+                            // return $this->redirect('biannually');      
+                        }else{
+                            if($prevHalf < $modelPayment->payment_bi_annually){
+                                $arrayQuarter =  array();
 
-    //     if ($modelPayment->load(Yii::$app->request->post()) && $modelPayment->save()) {
-    //         return $this->redirect(['biannually', 'id' => $modelPayment->payment_id]);
-    //     } else {
-    //             return $this->render('paymentoptionsbiannually', [
-    //                 'modelPayment' => $modelPayment,
-    //             ]);
-    //     }
-    // }
+                                for($i=0; $i<$modelPayment->payment_bi_annually; $i++){
+                                    $arrayHalf[$i]["payment_status"] = 'Paid';
+                                    $arrayHalf[$i]["biannually_assessment"] = $biannually_assessment;
+                                    $arrayHalf[$i]["payment_bi_annually"] = $i+1;
+                                }                                
+                                    if($modelPayment->payment_bi_annually == 2){    
+                                        $modelPayment->payment_status = 'Paid';
+                                    }
 
+                                $modelPayment->save(); 
+
+                                return $this->render('biannually', ['modelPayment' => $modelPayment, 'arrayHalf' => $arrayHalf]); 
+                            }else{
+                                return $this->render('payoptionbi', ['modelPayment' => $modelPayment]);                            
+                            }     
+                        }
+                    }
+                    return $this->render('payoptionbi', ['modelPayment' => $modelPayment]);
+         } else {
+            return $this->render('payoptionbi', ['modelPayment' => $modelPayment]);  
+        }  
+    }
 
     /**
      * Finds the Payment model based on its primary key value.

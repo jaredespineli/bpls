@@ -1,16 +1,16 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Business */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form yii\bootstrap\ActiveForm */
 ?>
 
-<div class="business-form">
+<div class="business-form" >
 
-    <?php $form = ActiveForm::begin(); ?>   
+    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>   
 
     <?= $form->field($model, 'business_name')->textInput(['maxlength' => true]) ?>
 
@@ -94,7 +94,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'postal_code')->textInput(['maxlength' => true]) ?>
 
-    <div class="form-group">
+    <div class="form-group" >
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 

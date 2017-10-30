@@ -24,7 +24,7 @@ use app\assets\AppAsset;
                         
                         ['label' => 'Manage Business', 'icon' => 'user', 'items' => [
                             ['label' => 'Create Business', 'url' => ['business/index']],
-                            ['label' => 'Upload Documents', 'url' => ['business/upload']],
+                            ['label' => 'Verify Documents', 'url' => ['business/verify']],
                         ]],
                         
                         ['label' => 'Manage Assessment', 'icon' => 'user', 'url' =>['assessment/index']],

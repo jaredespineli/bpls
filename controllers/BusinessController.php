@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Assessment;
+use app\models\Document;
 
 /**
  * BusinessController implements the CRUD actions for Business model.
@@ -78,6 +79,16 @@ class BusinessController extends Controller
             $modelAssess->president_name = $model->president_name;
             $modelAssess->save();
 
+            $modelDoc = new Document();
+            $modelDoc->business_id = $model->business_id;
+            $modelDoc->barangay_clearance = "Disapproved";
+            $modelDoc->zoning_clearance = "Disapproved";
+            $modelDoc->sanitary_clearance = "Disapproved";
+            $modelDoc->occupancy_permit = "Disapproved";
+            $modelDoc->fire_safety = "Disapproved";
+            $modelDoc->save();
+
+
             return $this->redirect(['view', 'id' => $model->business_id]);
         } else {
             return $this->render('create', [
@@ -118,6 +129,48 @@ class BusinessController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+    * Use for document verification
+    */
+    public function actionVerify(){
+        $this->layout = 'admin';         
+
+        //get all business
+        $modelVerify =  Yii::$app->db->createCommand('SELECT * from business')
+            ->queryAll();
+
+
+        //update document_status
+        for($i = 0; $i < sizeof($modelVerify); $i++ ){
+            $doc = Document::find()
+                ->where(['business_id' => $modelVerify[$i]["business_id"]])
+                ->one();
+
+            if(trim($doc->barangay_clearance, " ") == "Approved" && trim($doc->zoning_clearance, " ") == "Approved" && trim($doc->sanitary_clearance, " ") == "Approved" && trim($doc->occupancy_permit, " ") == "Approved" && trim($doc->fire_safety, " ") == "Approved"){
+                $doc->document_status = "Approved" ;
+            }else{
+                $doc->document_status = "Disapproved" ;
+            }
+            $doc->save();
+        }
+
+        return $this->render('verify', [                
+            'modelVerify' => $modelVerify   
+        ]); 
+    }
+
+    public function actionVerifydoc($id){
+        $this->layout = 'admin'; 
+
+        $modelVerify = Document::find()
+            ->where(['document_id' => $id])
+            ->one();
+
+        return $this->render('verifydoc', [
+            'modelVerify' => $modelVerify
+        ]);
     }
 
     /**

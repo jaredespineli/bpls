@@ -50,7 +50,8 @@ AppAsset::register($this);
                 )
                 . Html::endForm()
                 . '</li>'
-            )
+            ),
+            ['label' => 'Register', 'url' => ['/site/signup']]
         ],
     ]);
     NavBar::end();

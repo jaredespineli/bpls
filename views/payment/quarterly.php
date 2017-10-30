@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div>
 
     <p style="float: right;">
-        <?= Html::a('Pay Other Quarters', ['payoptionqu', 'id' => $modelPayment->payment_id], ['class' => 'btn btn-primary']) ?>   
+        <?= Html::a('Pay Now', ['payoptionqu', 'id' => $modelPayment->payment_id], ['class' => 'btn btn-primary']) ?>   
     </p>
 </div>
 
@@ -75,4 +75,3 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 </div>
-

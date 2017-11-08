@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Renewal;
+use app\models\RenewalSearch;
 use app\models\Approval;
 use app\models\ApprovalSearch;
 use app\models\Payment;
@@ -13,21 +15,38 @@ use app\models\Business;
 use app\models\BusinessSearch;
 use app\models\Document;
 use app\models\DocumentSearch;
-use app\models\Renewal;
-use app\models\RenewalSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ApprovalController implements the CRUD actions for Approval model.
+ * RenewalController implements the CRUD actions for Renewal model.
  */
-class ApprovalController extends \yii\web\Controller
+class RenewalController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Lists all Renewal models.
+     * @return mixed
+     */
     public function actionIndex()
     {
         $this->layout = 'admin';
-        $searchModel = new ApprovalSearch();
+        $searchModel = new RenewalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -37,30 +56,28 @@ class ApprovalController extends \yii\web\Controller
     }
 
     /**
-     * Displays a single Approval model.
+     * Displays a single Renewal model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-        $this->layout = 'admin';
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Approval model.
+     * Creates a new Renewal model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $this->layout = 'admin';
-        $model = new Approval();
+        $model = new Renewal();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->approval_id]);
+            return $this->redirect(['view', 'id' => $model->renewal_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -69,38 +86,42 @@ class ApprovalController extends \yii\web\Controller
     }
 
     /**
-     * Updates an existing Approval model.
+     * Updates an existing Renewal model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
-    	$this->layout = 'admin';
-
         $model = $this->findModel($id);
 
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->renewal_id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
-     * Deletes an existing Approval model.
+     * Deletes an existing Renewal model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
     public function actionDelete($id)
     {
-        $this->layout = 'admin';
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
-    public function actionStatus($id){
-    	$this->layout = 'admin';
+    public function actionRenewalstatus($id){
+        $this->layout = 'admin';
 
         $modelBusiness =  Business::find()
-        		->where(['business_id' => $id])
+                ->where(['business_id' => $id])
                 ->one();
 
         $modelAssess =  Assessment::find()
@@ -112,10 +133,10 @@ class ApprovalController extends \yii\web\Controller
                 ->one();
 
         $modelDoc =  Document::find()
-                ->where(['business_id' => $modelBusiness->business_id	])      
+                ->where(['business_id' => $modelBusiness->business_id   ])      
                 ->one();
 
-        return $this->render('status', [
+        return $this->render('renewalstatus', [
                 'modelBusiness' => $modelBusiness,
                 'modelAssess' => $modelAssess,
                 'modelPayment' => $modelPayment,
@@ -124,15 +145,15 @@ class ApprovalController extends \yii\web\Controller
     }
 
     /**
-     * Finds the Approval model based on its primary key value.
+     * Finds the Renewal model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Approval the loaded model
+     * @return Renewal the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Approval::findOne($id)) !== null) {
+        if (($model = Renewal::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

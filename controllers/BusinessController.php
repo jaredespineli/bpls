@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use app\models\Assessment;
 use app\models\Document;
 use app\models\Approval;
+use app\models\Renewal;
 
 /**
  * BusinessController implements the CRUD actions for Business model.
@@ -95,6 +96,13 @@ class BusinessController extends Controller
             $modelApprove->business_name = $model->business_name;            
             $modelApprove->approval_status = "Pending";
             $modelApprove->save();
+
+            $modelRenew = new Renewal();
+            $modelRenew->business_id = $model->business_id;  
+            $modelRenew->business_name = $model->business_name;            
+            $modelRenew->renewal_status = "Pending";
+            $modelRenew->save();
+
 
 
             return $this->redirect(['view', 'id' => $model->business_id]);

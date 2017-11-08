@@ -24,7 +24,7 @@ use app\models\Document;
 /* @var $searchModel app\models\PaymentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Business Approval Status';
+$this->title = 'Business Renewal Status';
 $this->params['breadcrumbs'][] = $this->title;
 
 $modelBusiness =  Business::find()
@@ -56,10 +56,10 @@ $modelBusiness =  Business::find()
                <tr>                    
                     <td>Payment</td>";
 
-                     if(trim($modelPayment->payment_kind, " ") == 'Quarterly' || trim($modelPayment->payment_kind, " ") == 'Bi-Annually' || trim($modelPayment->payment_kind, " ") == 'Annually'){
-                        echo "<td>". $modelPayment->payment_kind ."</td>";
+                     if(trim($modelPayment->payment_status, " ") == 'Paid'){
+                        echo "<td>". $modelPayment->payment_status ."</td>";
                     }else{
-                        echo "<td>" . Html::a('Pending', ['payment/paytable', 'id' => $modelPayment->assessment_id], ['class' => 'btn btn-primary']) . "</td>";
+                        echo "<td>" . Html::a('Pending', ['payment/paytable', 'id' => $modelPayment->payment_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
                     
                 echo "</tr>
@@ -82,8 +82,8 @@ echo "<br>";
 echo "<br>";
 
             
-                if((trim($modelPayment->payment_kind, " ") == 'Quarterly' || trim($modelPayment->payment_kind, " ") == 'Bi-Annually' || trim($modelPayment->payment_kind, " ") == 'Annually') && trim($modelDoc->document_status, " ") == 'Approved'){?>                   
-                        <?= Html::a('Generate Business Permit', ['business/generate'], ['class' => 'btn btn-primary']) ?>                    
+                if((trim($modelPayment->payment_status, " ") == 'Paid') && trim($modelDoc->document_status, " ") == 'Approved'){?>                   
+                        <?= Html::a('Renew Business Permit', ['renewal/generate'], ['class' => 'btn btn-primary']) ?>                    
                 <?php }
             ?>
 

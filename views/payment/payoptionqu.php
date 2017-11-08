@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         // }
                     // }   
                 }                
-        echo "</table>"; 
+        echo "  </table>"; 
         
 ?>    
     <br>

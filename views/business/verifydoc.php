@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="business-verifydoc-form">
 
 <div>
-    <h3><?= Html::encode('List of Documents: ' . $this->title) ?></h3>
+    <h3><?= Html::encode('Business Name: ' . $this->title) ?></h3>
 </div>
 
 <br/>
@@ -57,8 +57,8 @@ $this->params['breadcrumbs'][] = $this->title;
                <tr>                    
                     <td>Barangay Clearance</td>";
 
-                     if(trim($modelVerify->barangay_clearance, " ") == 'Approved'){
-                        echo "<td>". $modelVerify->barangay_clearance ."</td>";
+                     if(trim($modelVerify->barangay_clearance_status, " ") == 'Approved'){
+                        echo "<td>". $modelVerify->barangay_clearance_status ."</td>";
                     }else{
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
@@ -67,8 +67,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                     <td>Zoning Clearance</td>";
                     
-                    if(trim($modelVerify->zoning_clearance, " ") == 'Approved'){
-                        echo "<td>". $modelVerify->zoning_clearance ."</td>";
+                    if(trim($modelVerify->zoning_clearance_status, " ") == 'Approved'){
+                        echo "<td>". $modelVerify->zoning_clearance_status ."</td>";
                     }else{
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
@@ -77,8 +77,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                     <td>Sanitary Clearance</td>";
 
-                    if(trim($modelVerify->sanitary_clearance, " ") == 'Approved'){
-                        echo "<td>". $modelVerify->sanitary_clearance ."</td>";
+                    if(trim($modelVerify->sanitary_clearance_status, " ") == 'Approved'){
+                        echo "<td>". $modelVerify->sanitary_clearance_status ."</td>";
                     }else{
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
@@ -87,8 +87,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                     <td>Occupancy Permit</td>";
 
-                    if(trim($modelVerify->occupancy_permit, " ") == 'Approved'){
-                        echo "<td>". $modelVerify->occupancy_permit ."</td>";
+                    if(trim($modelVerify->occupancy_permit_status, " ") == 'Approved'){
+                        echo "<td>". $modelVerify->occupancy_permit_status ."</td>";
                     }else{
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
@@ -97,8 +97,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                     <td>Fire Safety Inspection Certificate</td>";
 
-                    if(trim($modelVerify->fire_safety, " ") == 'Approved'){
-                        echo "<td>". $modelVerify->fire_safety ."</td>";
+                    if(trim($modelVerify->fire_safety_status, " ") == 'Approved'){
+                        echo "<td>". $modelVerify->fire_safety_status ."</td>";
                     }else{
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
@@ -107,8 +107,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         echo "</table>";  
 
-        //also ok na to. di ko pa lang naayos yung para malaman kung anong doc yung ichange from disapproved to approved.
-        //di pa din ok yung view na approvedoc
+        
 ?>
 
 </div>

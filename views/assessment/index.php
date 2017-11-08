@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p> -->
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'rowOptions' => function($model){
             $url = Url::to(['assessment/update', 'id' => $model["assessment_id"]]);
             return ['onclick' => "window.location.href='{$url}'"];

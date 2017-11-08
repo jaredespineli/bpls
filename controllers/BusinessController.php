@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Assessment;
 use app\models\Document;
+use app\models\Approval;
 
 /**
  * BusinessController implements the CRUD actions for Business model.
@@ -81,12 +82,19 @@ class BusinessController extends Controller
 
             $modelDoc = new Document();
             $modelDoc->business_id = $model->business_id;
-            $modelDoc->barangay_clearance = "Disapproved";
-            $modelDoc->zoning_clearance = "Disapproved";
-            $modelDoc->sanitary_clearance = "Disapproved";
-            $modelDoc->occupancy_permit = "Disapproved";
-            $modelDoc->fire_safety = "Disapproved";
+            $modelDoc->document_status = "Pending";
+            $modelDoc->barangay_clearance_status = "Pending";
+            $modelDoc->zoning_clearance_status = "Pending";
+            $modelDoc->sanitary_clearance_status = "Pending";
+            $modelDoc->occupancy_permit_status = "Pending";
+            $modelDoc->fire_safety_status = "Pending";
             $modelDoc->save();
+
+            $modelApprove = new Approval();
+            $modelApprove->business_id = $model->business_id;  
+            $modelApprove->business_name = $model->business_name;            
+            $modelApprove->approval_status = "Pending";
+            $modelApprove->save();
 
 
             return $this->redirect(['view', 'id' => $model->business_id]);
@@ -148,10 +156,10 @@ class BusinessController extends Controller
                 ->where(['business_id' => $modelVerify[$i]["business_id"]])
                 ->one();
 
-            if(trim($doc->barangay_clearance, " ") == "Approved" && trim($doc->zoning_clearance, " ") == "Approved" && trim($doc->sanitary_clearance, " ") == "Approved" && trim($doc->occupancy_permit, " ") == "Approved" && trim($doc->fire_safety, " ") == "Approved"){
+            if((trim($doc->barangay_clearance_status, " ") == "Approved") && (trim($doc->zoning_clearance_status, " ") == "Approved") && (trim($doc->sanitary_clearance_status, " ") == "Approved") && (trim($doc->occupancy_permit_status, " ") == "Approved") && (trim($doc->fire_safety_status, " ") == "Approved")){
                 $doc->document_status = "Approved" ;
             }else{
-                $doc->document_status = "Disapproved" ;
+                $doc->document_status = "Pending" ;
             }
             $doc->save();
         }
@@ -172,6 +180,55 @@ class BusinessController extends Controller
             'modelVerify' => $modelVerify
         ]);
     }
+
+    public function actionApprovedoc($id){
+        $this->layout = 'admin'; 
+
+        $modelVerify = Document::find()
+            ->where(['document_id' => $id])
+            ->one();
+
+        $barangay_clearance_status = $modelVerify->barangay_clearance_status;
+        $zoning_clearance_status = $modelVerify->zoning_clearance_status;
+        $sanitary_clearance_status = $modelVerify->sanitary_clearance_status;
+        $occupancy_permit_status = $modelVerify->occupancy_permit_status;
+        $fire_safety_status = $modelVerify->fire_safety_status;
+
+       if ($modelVerify->load(Yii::$app->request->post())) {            
+            if(trim($barangay_clearance_status, " ") == 'Pending' && trim($modelVerify->barangay_clearance_status, " ") == 'Approved'){
+                $modelVerify->barangay_clearance_received_by = $modelVerify->received_by;
+                $modelVerify->barangay_clearance_date = $modelVerify->date;                 
+            }
+                if(trim($zoning_clearance_status, " ") == 'Pending' && trim($modelVerify->zoning_clearance_status, " ") == 'Approved'){
+                    $modelVerify->zoning_clearance_received_by = $modelVerify->received_by;
+                    $modelVerify->zoning_clearance_date = $modelVerify->date;                     
+                }
+                    if(trim($sanitary_clearance_status, " ") == 'Pending' && trim($modelVerify->sanitary_clearance_status, " ") == 'Approved'){
+                        $modelVerify->sanitary_clearance_received_by = $modelVerify->received_by;
+                        $modelVerify->sanitary_clearance_date = $modelVerify->date;                         
+                    }
+                        if(trim($occupancy_permit_status, " ") == 'Pending' && trim($modelVerify->occupancy_permit_status, " ") == 'Approved'){
+                            $modelVerify->occupancy_permit_received_by = $modelVerify->received_by;
+                            $modelVerify->occupancy_permit_date = $modelVerify->date;                             
+                        }
+                            if(trim($fire_safety_status, " ") == 'Pending' && trim($modelVerify->fire_safety_status, " ") == 'Approved'){
+                                $modelVerify->fire_safety_received_by = $modelVerify->received_by;
+                                $modelVerify->fire_safety_date = $modelVerify->date; 
+                                
+                            }
+            $modelVerify->save();
+            return $this->render('verifydoc', [
+            'modelVerify' => $modelVerify
+        ]);
+
+       } 
+
+        return $this->render('approvedoc', [
+            'modelVerify' => $modelVerify
+        ]);
+    }
+
+
 
     /**
      * Finds the Business model based on its primary key value.

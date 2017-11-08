@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th>Business Name</th>
                     <th>Document Status</th>  
                     <th>Action</th>                    
-               </tr>";
+        </tr>";
         
 
         for($i = 0; $i < sizeof($modelVerify); $i++ ){

@@ -27,7 +27,7 @@ class Payment extends \yii\db\ActiveRecord
     {
         return [
             [['assessment_id', 'payment_quarter', 'payment_annually', 'payment_bi_annually'], 'integer'],
-            [['business_name', 'president_name', 'payment_status', 'payment_kind', 'or_number', 'date', 'received_by'], 'safe'],
+            [['business_name', 'president_name', 'payment_status', 'payment_kind', 'or_number', 'date', 'received_by', 'payment_status_per'], 'safe'],
             [['grand_total', 'assessed_value'], 'number']
         ];
     }

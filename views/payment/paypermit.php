@@ -1,0 +1,75 @@
+<style type="text/css">
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 2px;
+    }
+</style>
+
+
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+/* @var $this yii\web\View */
+/* @var $model app\models\Payment */
+/* @var $form yii\widgets\ActiveForm */
+
+$this->title = $model->business_name;
+$this->params['breadcrumbs'][] = ['label' => 'Official Receipt', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+
+
+?>
+
+<div class="payment-option-quarter">
+
+
+    <?php $form = ActiveForm::begin(); ?>
+	
+	<?php
+        
+        
+        echo "Property Owner: <strong>" . $model->president_name . "</strong><br>";
+        echo "<br>";        
+        echo "<br>";
+
+        echo "<table>
+               <tr>                    
+                    <th>Payment Kind</th>
+                    <th>Quarter or Half</th>
+                    <th>Assessed Value</th>                                                        
+                </tr>";
+
+
+        
+            
+                echo "<tr>";            
+                echo "<td>" . $model->payment_kind . "</td>";
+                echo "<td>" . ($model->payment_quarter + 1) . "</td>";           
+                echo "<td>" . $model->assessed_value . "</td>";                       
+                echo "</tr>";
+                        
+        echo "</table>"; 
+        
+?>    
+    <br>
+    <br>
+	<?= $form->field($model, 'or_number')->textInput(['value' => $model->or_number]) ?>
+	<?= $form->field($model, 'date')->textInput(['value' => $model->date]) ?>
+	<?= $form->field($model, 'received_by')->textInput(['value' => $model->received_by]) ?>
+
+    <div class="form-group">
+        <?= Html::submitButton('Pay Now',['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
+</div>

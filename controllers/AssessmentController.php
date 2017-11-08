@@ -111,15 +111,19 @@ class AssessmentController extends Controller
                 $model_pay->assessment_id = $model->assessment_id;
                 $model_pay->business_name = $model->business_name;
                 $model_pay->president_name = $model->president_name;
-                $model_pay->grand_total = $model->grand_total;                                
+                $model_pay->grand_total = $model->grand_total;  
+                $model_pay->payment_quarter = 0;                                                
                 $model_pay->payment_status = 'Unpaid';
+                $model_pay->payment_status_per = 'Unpaid';
                 $model_pay->save();                
 
             }
 
             else {
-                $model_payment->grand_total = $model->grand_total;
-                $model_payment->save();
+                for($i = 0; $i < sizeof($model_payment); $i++){
+                    $model_payment[$i]["grand_total"] = $model->grand_total;
+                    $model_payment[$i]->save();
+                }
             }
 
             return $this->redirect(['view', 'id' => $model->assessment_id]);

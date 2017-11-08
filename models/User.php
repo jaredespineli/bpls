@@ -2,12 +2,27 @@
 
 namespace app\models;
 
+use Yii;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property integer $user_id
+ * @property string $full_name
+ * @property string $username
+ * @property string $password
+ * @property string $user_type
+ * @property string $first_name
+ * @property string $middle_name
+ * @property string $last_name
+ * @property string $authKey
+ * @property string $suffix_name
+ */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
-    // public $id;
-    // public $username;
-    // public $password;
-    // public $authKey;
+    /**
+     * @inheritdoc
+     */
     public $accessToken;
 
     public static function tableName()
@@ -15,15 +30,36 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return 'user';
     }
 
-     public function rules()
+    /**
+     * @inheritdoc
+     */
+    public function rules()
     {
         return [
-            [['user_id','username', 'password', 'user_type','last_name'], 'required'],
-            [['full_name'], 'string'],
-            [['first_name','middle_name','last_name','username'], 'string', 'max' => 255],
+            [['username', 'password', 'user_type', 'last_name', 'authKey'], 'required'],
+            [['full_name', 'username', 'first_name', 'middle_name', 'last_name', 'suffix_name'], 'string', 'max' => 255],
+            [['password', 'authKey'], 'string', 'max' => 32],
             [['user_type'], 'string', 'max' => 10],
-            [['authKey', 'password'], 'string', 'max' => 32],
             [['username'], 'unique'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'user_id' => 'User ID',
+            'full_name' => 'Full Name',
+            'username' => 'Username',
+            'password' => 'Password',
+            'user_type' => 'User Type',
+            'first_name' => 'First Name',
+            'middle_name' => 'Middle Name',
+            'last_name' => 'Last Name',
+            'authKey' => 'Auth Key',
+            'suffix_name' => 'Suffix Name',
         ];
     }
 
@@ -32,7 +68,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        // return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
         return self::findOne($id);
     }
 
@@ -41,13 +76,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        // return $this->access_token;
+        throw new NotSupportedException();
     }
 
     /**
@@ -58,14 +88,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        // foreach (self::$users as $user) {
-        //     if (strcasecmp($user['username'], $username) === 0) {
-        //         return new static($user);
-        //     }
-        // }
 
-        // return null;
-        return self::findOne(['username'=>trim($username, " ")]);
+       return self::findOne(['username'=>trim($username, " ")]);
+
     }
 
     /**
@@ -73,7 +98,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function getId()
     {
-        // return $this->id;
         return $this->user_id;
     }
 
@@ -101,6 +125,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        $trimmed = trim($this->password, " ");
+        return $trimmed === $password;
     }
 }

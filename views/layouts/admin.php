@@ -28,7 +28,10 @@ use app\assets\AppAsset;
                         ]],
                         
                         ['label' => 'Manage Assessment', 'icon' => 'user', 'url' =>['assessment/index']],
-                        ['label' => 'Manage Payment', 'icon' => 'user', 'url' =>['payment/index']],                                                      
+                        ['label' => 'Manage Payment', 'icon' => 'user', 'url' =>['payment/index']],
+                        ['label' => 'Approval', 'icon' => 'user', 'url' =>['approval/index']],
+                        ['label' => 'Renewal', 'icon' => 'user', 'url' =>['renewal/index']],
+
                     ]
                 ]);
             ?>

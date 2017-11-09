@@ -7,20 +7,26 @@ $this->title = 'BPLS';
 <div class="site-index">
     <!-- <img src="img/seal.png" style="height:32px;"/> -->
     <div class="jumbotron">
-        <h1>Welcome to OpenLGU Business Permits and Licensing System Module</h1>
+        <br>
+        <img src="img/seal.png" height = "190px" >
+        <h3>Welcome to OpenLGU Business Permits and Licensing System Module</h3>
+        <!-- <h5>A web application designed to make the entire business permit and licensing process faster and more efficient.</h5> -->
     </div>
 
-            <div class="col-lg-4">
-                <h2>Features</h2>
+            <div class="col-lg-4">                
+            <?php
+                if (Yii::$app->user->isGuest) {
+                    echo "<h3>Features</h3>
 
-                <ul>
-                	<li><h4>Account Creation</h4></li>
-                	<li><h4>Business Registration</h4></li>
-                	<li><h4>Assessment of Fees</h4></li>
-                	<li><h4>Payment of Fees</h4></li>
-                	<li><h4>Business Permit Generation</h4></li>
-                </ul>
+                        <ul>
+                    	<li><h5>Account Creation</h5></li>
+                    	<li><h5>Business Registration</h5></li>
+                    	<li><h5>Assessment of Fees</h5></li>
+                    	<li><h5>Payment of Fees</h5></li>
+                    	<li><h5>Business Permit Generation</h5></li>
 
-               
+                    </ul>";
+                }
+            ?>        
             </div>
 </div>

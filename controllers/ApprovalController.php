@@ -26,7 +26,19 @@ class ApprovalController extends \yii\web\Controller
 {
     public function actionIndex()
     {
-        $this->layout = 'admin';
+
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }      
+
         $searchModel = new ApprovalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -43,7 +55,18 @@ class ApprovalController extends \yii\web\Controller
      */
     public function actionView($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+           if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }      
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -56,7 +79,18 @@ class ApprovalController extends \yii\web\Controller
      */
     public function actionCreate()
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }      
+
         $model = new Approval();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -76,7 +110,17 @@ class ApprovalController extends \yii\web\Controller
      */
     public function actionUpdate($id)
     {
-    	$this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }          	
 
         $model = $this->findModel($id);
 
@@ -90,14 +134,36 @@ class ApprovalController extends \yii\web\Controller
      */
     public function actionDelete($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }      
+        
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
-    public function actionStatus($id){
-    	$this->layout = 'admin';
+    public function actionStatus($id)
+    {
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }      
 
         $modelBusiness =  Business::find()
         		->where(['business_id' => $id])

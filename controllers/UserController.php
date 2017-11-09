@@ -35,6 +35,18 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -51,6 +63,18 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -63,6 +87,18 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $model = new User();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -82,6 +118,18 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -101,6 +149,18 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+            
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

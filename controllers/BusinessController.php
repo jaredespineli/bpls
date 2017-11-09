@@ -39,7 +39,18 @@ class BusinessController extends Controller
      */
     public function actionIndex()
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $searchModel = new BusinessSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -56,7 +67,18 @@ class BusinessController extends Controller
      */
     public function actionView($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -69,7 +91,18 @@ class BusinessController extends Controller
      */
     public function actionCreate()
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $model = new Business();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -121,7 +154,18 @@ class BusinessController extends Controller
      */
     public function actionUpdate($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -141,7 +185,18 @@ class BusinessController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -150,8 +205,19 @@ class BusinessController extends Controller
     /**
     * Use for document verification
     */
-    public function actionVerify(){
-        $this->layout = 'admin';         
+    public function actionVerify()\
+    {
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
 
         //get all business
         $modelVerify =  Yii::$app->db->createCommand('SELECT * from business')
@@ -177,8 +243,19 @@ class BusinessController extends Controller
         ]); 
     }
 
-    public function actionVerifydoc($id){
-        $this->layout = 'admin'; 
+    public function actionVerifydoc($id)
+    {
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
 
         $modelVerify = Document::find()
             ->where(['document_id' => $id])
@@ -189,8 +266,19 @@ class BusinessController extends Controller
         ]);
     }
 
-    public function actionApprovedoc($id){
-        $this->layout = 'admin'; 
+    public function actionApprovedoc($id)
+    {
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }   
 
         $modelVerify = Document::find()
             ->where(['document_id' => $id])

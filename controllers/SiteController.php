@@ -72,19 +72,15 @@ class SiteController extends Controller
         }else{
             $user_type = trim(Yii::$app->user->identity->user_type, " ");
 
-            if($user_type == 'admin'){
-                $this->layout = 'admin';
-                return $this->render('index');
-            }else if($user_type === 'assessor'){
-                $this->layout = 'admin';
-                return $this->render('index');
-            }else if($user_type === 'treasurer'){
-                $this->layout = 'admin';
-                return $this->render('index');
-            }else if ($user_type === 'taxpayer'){
-                $this->layout = 'admin';
-                return $this->render('index');
-            } 
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }     
         } 
 
         return $this->render('index');
@@ -96,7 +92,7 @@ class SiteController extends Controller
      * @return string
      */
     public function actionLogin()
-    {
+    {        
         $model = new LoginForm();
 
         if (!Yii::$app->user->isGuest) {
@@ -125,40 +121,6 @@ class SiteController extends Controller
      *
      * @return string
      */
-    /*Your face
-Lights up the sky on the highway
-Someday
-You'll share your world with me
-Someday
-
-You mesmerize me, with diamond eyes
-I try to fool myself to think I'll be alright
-But I am losing all control
-My mind, my heart, my body and my soul
-
-Never in my life have I been more sure
-So come on up to me and close the door
-Nobody's made me feel this way before
-You're everything I wanted and more
-
-To speak or not to, where to begin
-A great dilemmas I'm finding myself in
-For all I know you only see me as a friend
-I tried to tell myself wake up fool
-This fairy tale's got to end
-
-Never in my life have I been more sure
-So come on up to me and close the door
-Nobody's made me feel this way before
-You're everything I wanted...
-
-Never in my life have I been more sure
-So come on up to me and close the door
-Nobody's made me feel this way before
-You're everything I wanted and more
-
-You're everything I wanted*/
-
     public function actionSignup()
     {
         $model = new Taxpayer();
@@ -167,7 +129,7 @@ You're everything I wanted*/
             $model->save();
 
             $modeluser = new User();
-            $modeluser->user_id = $model->user_id;
+            //$modeluser->user_id = $model->user_id;
             $modeluser->username = $model->taxpayer_username;
             $modeluser->password = $model->taxpayer_password;
             $modeluser->first_name = $model->taxpayer_fname;
@@ -176,6 +138,7 @@ You're everything I wanted*/
             $modeluser->suffix_name = $model->taxpayer_suffix_name;
             $modeluser->full_name = trim($model->taxpayer_fname," "). " " .trim($model->taxpayer_mname," "). " " .trim($model->taxpayer_lname," "). " " .trim($model->taxpayer_suffix_name," ");
             $modeluser->authKey = $this->generateRandomString(32);
+            $modeluser->user_type = 'Taxpayer';
             $modeluser->save();  
                       
             return $this->redirect(['index']);
@@ -216,18 +179,19 @@ You're everything I wanted*/
     }
 
 
-    public function actionChangepassword(){
-        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+    public function actionChangepassword()
+    {
+            $user_type = trim(Yii::$app->user->identity->user_type, " ");
 
-        if($user_type == 'admin'){
-            $this->layout = 'admin';
-        }else if ($user_type === 'assessor'){
-            $this->layout = 'assessor';  
-        }else if ($user_type === 'treasurer'){
-            $this->layout = 'treasurer';  
-        }else if ($user_type === 'taxpayer'){
-            $this->layout = 'taxpayer';
-        }
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }         
 
         $model = new PasswordForm();
 

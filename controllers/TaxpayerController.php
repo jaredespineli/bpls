@@ -35,7 +35,18 @@ class TaxpayerController extends Controller
      */
     public function actionIndex()
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $searchModel = new TaxpayerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -52,7 +63,18 @@ class TaxpayerController extends Controller
      */
     public function actionView($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -66,7 +88,18 @@ class TaxpayerController extends Controller
      */
     public function actionCreate()
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $model = new Taxpayer();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -86,7 +119,18 @@ class TaxpayerController extends Controller
      */
     public function actionUpdate($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -106,7 +150,18 @@ class TaxpayerController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+            
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

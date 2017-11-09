@@ -40,7 +40,18 @@ class PaymentController extends Controller
      */
     public function actionIndex()
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $searchModel = new PaymentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->query->andWhere(['payment_quarter'=> 0]);
@@ -58,7 +69,18 @@ class PaymentController extends Controller
      */
     public function actionView($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -71,7 +93,18 @@ class PaymentController extends Controller
      */
     public function actionCreate()
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $model = new Payment();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -91,7 +124,17 @@ class PaymentController extends Controller
      */
     public function actionUpdate($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
 
         $model = $this->findModel($id);
 
@@ -171,7 +214,18 @@ class PaymentController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -179,7 +233,18 @@ class PaymentController extends Controller
 
     public function actionPaytable($id)
     {                
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+
         $model = $this->findModel($id);  
         
         $modelPayment = Payment::find()
@@ -192,7 +257,17 @@ class PaymentController extends Controller
 
     public function actionPaypermit($id)
     {
-        $this->layout = 'admin';
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
 
         $model = $this->findModel($id);
 
@@ -218,7 +293,20 @@ class PaymentController extends Controller
        return $this->render('paypermit', ['model' => $model]);
     }
 
-    public function actionOfficialreceipt($id){
+    public function actionOfficialreceipt($id)
+    {
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+            if($user_type == 'Admin'){
+                $this->layout = 'admin';                
+            }else if($user_type === 'Assessor'){
+                $this->layout = 'assessor';
+            }else if($user_type === 'Treasurer'){
+                $this->layout = 'treasurer';
+            }else if ($user_type === 'Taxpayer'){
+                $this->layout = 'taxpayer';
+            }
+                
         $model = $this->findModel($id);
 
         $pdf = new Pdf([ 

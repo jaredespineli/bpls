@@ -60,9 +60,9 @@ class Taxpayer extends \yii\db\ActiveRecord
         return [
             [['taxpayer_bir_app_date', 'taxpayer_birth_date'], 'safe'],
             [['taxpayer_emergency_contact_number', 'taxpayer_emergency_contact_email_address'], 'string'],
-            [['user_id'], 'integer'],
+            //[['user_id'], 'integer'],
             [['taxpayer_email_add', 'taxpayer_username', 'taxpayer_password', 'taxpayer_confirm_password', 'taxpayer_fname', 'taxpayer_mname', 'taxpayer_lname', 'taxpayer_suffix_name', 'taxpayer_dob_month', 'taxpayer_dob_day', 'taxpayer_dob_year', 'taxpayer_civil_status', 'taxpayer_sex', 'taxpayer_tin', 'taxpayer_address_unit_num', 'taxpayer_address_street', 'taxpayer_address_subdivision', 'taxpayer_address_barangay', 'taxpayer_contact_type', 'taxpayer_contact_detail', 'taxpayer_emergency_contact_fname', 'taxpayer_emergency_contact_mname', 'taxpayer_emergency_contact_lname', 'taxpayer_emergency_contact_suffix_name', 'taxpayer_emergency_contact_relationship', 'taxpayer_address'], 'string', 'max' => 255],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'user_id']],
+            //[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'user_id']],
         ];
     }
 

@@ -28,32 +28,31 @@ AppAsset::register($this);
     <?php
         
     NavBar::begin([
-        'brandLabel' => '<img src="img/seal.png" style="display:inline; vertical-align: right; height:32px;"/> OpenLGU Business Permit and Licensing System',
+        'brandLabel' => 'OpenLGU Business Permit and Licensing System',
         // 'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
+    $menuItems = [
+                ['label' => 'Home', 'url' => ['/site/index']],                
+    ];
+
+    if (Yii::$app->user->isGuest) {                
+                $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+                $menuItems[] = ['label' => 'Register', 'url' => ['/site/signup']];
+            } else {
+                $menuItems[] = [
+                    'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                    'url' => ['/site/logout'],
+                    'linkOptions' => ['data-method' => 'post']
+                ];
+    }
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            //['label' => 'Register', 'url' => ['/site/register']],                        
-            //['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            ),
-            ['label' => 'Register', 'url' => ['/site/signup']]
-        ],
+        'items' => $menuItems,                    
     ]);
     NavBar::end();
     ?>

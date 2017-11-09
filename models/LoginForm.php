@@ -69,14 +69,6 @@ class LoginForm extends Model
         return false;
     }
 
-    // public function register()
-    // {
-    //     // if ($this->validate()) {
-    //     //     return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
-    //     // }
-    //     // return false;
-    // }
-
     /**
      * Finds user by [[username]]
      *

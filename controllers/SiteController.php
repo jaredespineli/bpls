@@ -125,6 +125,40 @@ class SiteController extends Controller
      *
      * @return string
      */
+    /*Your face
+Lights up the sky on the highway
+Someday
+You'll share your world with me
+Someday
+
+You mesmerize me, with diamond eyes
+I try to fool myself to think I'll be alright
+But I am losing all control
+My mind, my heart, my body and my soul
+
+Never in my life have I been more sure
+So come on up to me and close the door
+Nobody's made me feel this way before
+You're everything I wanted and more
+
+To speak or not to, where to begin
+A great dilemmas I'm finding myself in
+For all I know you only see me as a friend
+I tried to tell myself wake up fool
+This fairy tale's got to end
+
+Never in my life have I been more sure
+So come on up to me and close the door
+Nobody's made me feel this way before
+You're everything I wanted...
+
+Never in my life have I been more sure
+So come on up to me and close the door
+Nobody's made me feel this way before
+You're everything I wanted and more
+
+You're everything I wanted*/
+
     public function actionSignup()
     {
         $model = new Taxpayer();
@@ -133,6 +167,7 @@ class SiteController extends Controller
             $model->save();
 
             $modeluser = new User();
+            $modeluser->user_id = $model->user_id;
             $modeluser->username = $model->taxpayer_username;
             $modeluser->password = $model->taxpayer_password;
             $modeluser->first_name = $model->taxpayer_fname;

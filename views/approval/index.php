@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'business_name',
             'approval_status',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

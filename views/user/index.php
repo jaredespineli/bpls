@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'last_name',
             // 'authKey',
             // 'suffix_name',
+            // 'taxpayer_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

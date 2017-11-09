@@ -17,14 +17,14 @@ use Yii;
  * @property string $last_name
  * @property string $authKey
  * @property string $suffix_name
+ *
+ * @property Taxpayer[] $taxpayers
  */
-class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
+class User extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
-    public $accessToken;
-
     public static function tableName()
     {
         return 'user';
@@ -61,6 +61,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'authKey' => 'Auth Key',
             'suffix_name' => 'Suffix Name',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaxpayers()
+    {
+        return $this->hasMany(Taxpayer::className(), ['user_id' => 'user_id']);
     }
 
     /**

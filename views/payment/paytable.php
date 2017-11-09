@@ -36,10 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div>
     <p style="float: right;">
         <?php 
-            if(trim($modelPayment[0]["payment_status"], " ") == 'Unpaid'){ 
+            if(trim($modelPayment[0]["payment_status"], " ") == 'Pending'){ 
 
                 for($i = 0; $i < sizeof($modelPayment); $i++){
-                    if(trim($modelPayment[$i]["payment_status_per"], " ") == 'Unpaid'){
+                    if(trim($modelPayment[$i]["payment_status_per"], " ") == 'Pending'){
                         $payment_id = $modelPayment[$i]["payment_id"];
                         ?>
                         <?= Html::a('Pay Now', ['paypermit', 'id' => $payment_id], ['class' => 'btn btn-primary']) ?>
@@ -70,7 +70,9 @@ $this->params['breadcrumbs'][] = $this->title;
                <tr>                    
                     <th>Payment Kind</th>
                     <th>Quarter or Half</th>
-                    <th>Assessed Value</th>                                    
+                    <th>Assessed Value</th>
+                    <th>Received By</th>   
+                    <th>Date Received</th>                                    
                     <th>Payment Status</th>
                 </tr>";
 
@@ -80,14 +82,15 @@ $this->params['breadcrumbs'][] = $this->title;
             echo "<td>" . $modelPayment[$counter]["payment_kind"] . "</td>";
             echo "<td>" . ($modelPayment[$counter]["payment_quarter"]+1) . "</td>";           
             echo "<td>" . $modelPayment[$counter]["assessed_value"] . "</td>";
+            echo "<td>" . $modelPayment[$counter]["received_by"] . "</td>";
+            echo "<td>" . $modelPayment[$counter]["date"] . "</td>";
             echo "<td>" . $modelPayment[$counter]["payment_status_per"] . "</td>";
-
             echo "</tr>";
         }
 
         echo "</table>"; 
 
-        //echo "<br>Grand Total: " . $modelPayment[0]["grand_total"];
+        
 ?>
 
 </div>

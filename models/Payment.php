@@ -26,7 +26,7 @@ class Payment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['assessment_id', 'payment_quarter', 'payment_annually', 'payment_bi_annually'], 'integer'],
+            [['assessment_id', 'payment_quarter', 'payment_annually', 'payment_bi_annually', 'year'], 'integer'],
             [['business_name', 'president_name', 'payment_status', 'payment_kind', 'or_number', 'date', 'received_by', 'payment_status_per'], 'safe'],
             [['grand_total', 'assessed_value'], 'number']
         ];
@@ -51,7 +51,8 @@ class Payment extends \yii\db\ActiveRecord
             'payment_status' => 'Payment Status',
             'payment_kind' => 'Type of Payment',
             'date' => 'Date',
-            'received_by' => 'Received By'
+            'received_by' => 'Received By',
+            'year' => 'Year'
         ];
     }
 }

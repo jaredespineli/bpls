@@ -17,9 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<div class="row">
 		<div class="col-lg-5">
-		<?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
-			<br>
-			<br>
+		<?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>						
 			<h2> Basic Information </h2>
 			<?= $form->field($model, 'taxpayer_email_add') ?>
 			<?= $form->field($model, 'taxpayer_username') ?>

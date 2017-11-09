@@ -26,9 +26,10 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
+        
     NavBar::begin([
-        'brandLabel' => 'OpenLGU Business Permit and Licensing System',
-        'brandUrl' => Yii::$app->homeUrl,
+        'brandLabel' => '<img src="img/seal.png" style="display:inline; vertical-align: right; height:32px;"/> OpenLGU Business Permit and Licensing System',
+        // 'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],

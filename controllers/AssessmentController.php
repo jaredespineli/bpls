@@ -101,11 +101,15 @@ class AssessmentController extends Controller
             $model->grand_total = $model->gross_sales_tax_amt + $model->gross_sales_tax_pnl + $model->transport_truck_tax_amt + $model->transport_truck_tax_pnl + $model->hazard_storage_tax_amt + $model->hazard_storage_tax_pnl + $model->sign_billboard_tax_amt + $model->sign_billboard_tax_pnl + $model->mayors_permit_fee_amt + $model->mayors_permit_fee_pnl + $model->garbage_fee_amt + $model->garbage_fee_pnl + $model->truck_van_permit_fee_amt + $model->truck_van_permit_fee_pnl + $model->sanitary_permit_fee_amt + $model->sanitary_permit_fee_pnl + $model->bldg_insp_fee_amt + $model->bldg_insp_fee_pnl + $model->elec_insp_fee_amt + $model->elec_insp_fee_pnl +$model->mech_insp_fee_amt + $model->mech_insp_fee_pnl + $model->plumb_insp_fee_amt + $model->plumb_insp_fee_pnl + $model->sign_billboard_fee_amt + $model->sign_billboard_fee_pnl + $model->sign_billboard_renew_fee_amt + $model->sign_billboard_renew_fee_pnl + $model->hazard_storage_fee_amt + $model->hazard_storage_fee_pnl + $model->bfp_fee_amt + $model->bfp_fee_pnl;
             $model->save();
 
-            $model_payment =  Payment::find()
-                ->where(['assessment_id' => $model->assessment_id])
-                ->one();
+            $model_payment_unpaid =  Payment::find()
+                ->where(['and', ['assessment_id' => $model->assessment_id], ['payment_status_per' => 'Pending']])
+                ->all();
 
-            if(sizeof($model_payment) == 0){
+            $model_payment_paid =  Payment::find()
+                ->where(['and', ['assessment_id' => $model->assessment_id], ['payment_status_per' => 'Paid']])
+                ->all();
+
+            if(sizeof($model_payment_unpaid) == 0){
 
                 $model_pay = new Payment(); //all created payment will have default payment status of unpaid
                 $model_pay->assessment_id = $model->assessment_id;
@@ -113,16 +117,29 @@ class AssessmentController extends Controller
                 $model_pay->president_name = $model->president_name;
                 $model_pay->grand_total = $model->grand_total;  
                 $model_pay->payment_quarter = 0;                                                
-                $model_pay->payment_status = 'Unpaid';
-                $model_pay->payment_status_per = 'Unpaid';
+                $model_pay->payment_status = 'Pending';
+                $model_pay->payment_status_per = 'Pending';
                 $model_pay->save();                
 
             }
 
             else {
-                for($i = 0; $i < sizeof($model_payment); $i++){
-                    $model_payment[$i]["grand_total"] = $model->grand_total;
-                    $model_payment[$i]->save();
+                if(is_null($model_payment_paid)){
+                    $assessed_value = $model->grand_total / sizeof($model_payment_unpaid);
+                }else{
+                    $paid_amount = 0;
+
+                    for($i = 0; $i < sizeof($model_payment_paid); $i++){
+                        $paid_amount = $paid_amount + $model_payment_paid[$i]["assessed_value"];
+                    }
+                    
+                    $assessed_value = ($model->grand_total - $paid_amount)/ sizeof($model_payment_unpaid);
+                }
+
+                for($i = 0; $i < sizeof($model_payment_unpaid); $i++){
+                    $model_payment_unpaid[$i]["grand_total"] = $model->grand_total;
+                    $model_payment_unpaid[$i]["assessed_value"] = $assessed_value;
+                    $model_payment_unpaid[$i]->save();
                 }
             }
 

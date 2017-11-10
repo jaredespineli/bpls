@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'rowOptions' => function($model){
-            $url = Url::to(['approval/status', 'id' => $model["business_id"]]);
+            $url = Url::to(['approval/status', 'id' => $model["approval_id"]]);
             return ['onclick' => "window.location.href='{$url}'"];
         },
         'columns' => [

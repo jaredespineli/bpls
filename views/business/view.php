@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'others_three_barcode',
             'others_four_barcode',
             'tax_payment_type',
-            'sys_entry_date',
+            //'sys_entry_date',
             'status',
             'full_address',
             'pay_mode',

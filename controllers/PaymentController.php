@@ -11,6 +11,8 @@ use app\models\AssessmentSearch;
 use app\models\Business;
 use app\models\BusinessSearch;
 use yii\web\Controller;
+use yii\web\UploadedFile;
+use yii\web\Response;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -272,20 +274,27 @@ class PaymentController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())){
-           $model->payment_status_per = 'Paid';
-           $model->save();
+            $model->officialreceipt = UploadedFile::getInstance($model, 'officialreceipt');
 
-           $modelPayment = Payment::find()
+            $extension = $model->officialreceipt->extension;
+            $model->officialreceipt->saveAs('officialreceipt_uploads/' . $model->officialreceipt->baseName . '.' . $model->officialreceipt->extension);
+                
+            $model->officialreceipt = $model->officialreceipt->name;
+               
+            $model->payment_status_per = 'Paid';
+            $model->save();
+
+            $modelPayment = Payment::find()
                 ->where(['assessment_id' => $model->assessment_id])
                 ->orderBy(['payment_quarter' => SORT_ASC])
                 ->all();
 
-           if(trim($modelPayment[sizeof($modelPayment)-1]->payment_status_per, " ") == 'Paid'){
+            if(trim($modelPayment[sizeof($modelPayment)-1]->payment_status_per, " ") == 'Paid'){
                 for($i = 0; $i < sizeof($modelPayment); $i++){
                     $modelPayment[$i]["payment_status"] = 'Paid';
                     $modelPayment[$i]->save();
                 }
-           }
+            }
 
            return $this->redirect(['paytable', 'id' => $model->payment_id]); 
         }

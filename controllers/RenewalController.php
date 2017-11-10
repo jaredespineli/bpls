@@ -60,6 +60,34 @@ class RenewalController extends Controller
         $searchModel = new RenewalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        //get all data of renewal
+        $modelRenewal =  Yii::$app->db->createCommand('SELECT * from renewal')
+            ->queryAll();
+
+        
+        //check system date, compare sa date now -- if lagpas na sa now, inactive else active
+        //sa loob ng for loop kukunin yung katumbas na approval ng renewal gamit ang business_id
+        for($i = 0; $i < sizeof($modelRenewal); $i++){
+            $modelApproval =  Approval::find()
+                ->where(['business_id' => $modelRenewal[$i]["business_id"]])      
+                ->one();    
+            
+            date_default_timezone_set('Asia/Manila');
+            $yearnow = date('Y');                        
+            //compare
+            $modelBusiness = Business::find()
+                ->where(['business_id' => $modelRenewal[$i]["business_id"]])      
+                ->one();
+                
+            if($modelApproval->next_renewal_date > $yearnow){
+                $modelBusiness->isActive = 0;
+                $modelBusiness->business_status = "Inactive";
+            }else{
+                $modelBusiness->isActive = 1;
+                $modelBusiness->business_status = "Active";                                            
+            }
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -194,11 +222,16 @@ class RenewalController extends Controller
                 ->where(['business_id' => $modelBusiness->business_id   ])      
                 ->one();
 
+        $modelApproval = Approval::find()
+                ->where(['business_id' => $modelBusiness->business_id])
+                ->one();
+
         return $this->render('renewalstatus', [
                 'modelBusiness' => $modelBusiness,
                 'modelAssess' => $modelAssess,
                 'modelPayment' => $modelPayment,
                 'modelDoc' => $modelDoc,
+                'modelApproval' => $modelApproval,
             ]);
     }
 

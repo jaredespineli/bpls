@@ -55,11 +55,14 @@ $modelBusiness =  Business::find()
                </tr>
                <tr>                    
                     <td>Payment</td>";
-
-                     if(trim($modelPayment->payment_kind, " ") == 'Quarterly' || trim($modelPayment->payment_kind, " ") == 'Bi-Annually' || trim($modelPayment->payment_kind, " ") == 'Annually'){
-                        echo "<td>". $modelPayment->payment_kind ."</td>";
-                    }else{
-                        echo "<td>" . Html::a('Pending', ['payment/paytable', 'id' => $modelPayment->assessment_id], ['class' => 'btn btn-primary']) . "</td>";
+                    if(is_null($modelPayment)){
+                        echo "<td>" . Html::a('Pending', ['assessment/update', 'id' => $modelAssess->assessment_id], ['class' => 'btn btn-primary']) . "</td>";
+                    }else{        
+                         if(trim($modelPayment->payment_kind, " ") == 'Quarterly' || trim($modelPayment->payment_kind, " ") == 'Bi-Annually' || trim($modelPayment->payment_kind, " ") == 'Annually'){
+                            echo "<td>". $modelPayment->payment_kind ."</td>";
+                        }else{
+                            echo "<td>" . Html::a('Pending', ['payment/paytable', 'id' => $modelPayment->assessment_id], ['class' => 'btn btn-primary']) . "</td>";
+                        }
                     }
                     
                 echo "</tr>
@@ -81,10 +84,9 @@ $modelBusiness =  Business::find()
 echo "<br>";
 echo "<br>";
 
-            
-                if((trim($modelPayment->payment_kind, " ") == 'Quarterly' || trim($modelPayment->payment_kind, " ") == 'Bi-Annually' || trim($modelPayment->payment_kind, " ") == 'Annually') && trim($modelDoc->document_status, " ") == 'Approved'){?>                   
+            if(trim($model->approval_status, " ") == 'Approved'){ ?>                   
                         <?= Html::a('Generate Business Permit', ['business/generate'], ['class' => 'btn btn-primary']) ?>                    
                 <?php }
             ?>
-
+                        
 </div>

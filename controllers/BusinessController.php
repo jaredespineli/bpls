@@ -205,7 +205,7 @@ class BusinessController extends Controller
     /**
     * Use for document verification
     */
-    public function actionVerify()\
+    public function actionVerify()
     {
         $user_type = trim(Yii::$app->user->identity->user_type, " ");
 
@@ -222,21 +222,6 @@ class BusinessController extends Controller
         //get all business
         $modelVerify =  Yii::$app->db->createCommand('SELECT * from business')
             ->queryAll();
-
-
-        //update document_status
-        for($i = 0; $i < sizeof($modelVerify); $i++ ){
-            $doc = Document::find()
-                ->where(['business_id' => $modelVerify[$i]["business_id"]])
-                ->one();
-
-            if((trim($doc->barangay_clearance_status, " ") == "Approved") && (trim($doc->zoning_clearance_status, " ") == "Approved") && (trim($doc->sanitary_clearance_status, " ") == "Approved") && (trim($doc->occupancy_permit_status, " ") == "Approved") && (trim($doc->fire_safety_status, " ") == "Approved")){
-                $doc->document_status = "Approved" ;
-            }else{
-                $doc->document_status = "Pending" ;
-            }
-            $doc->save();
-        }
 
         return $this->render('verify', [                
             'modelVerify' => $modelVerify   
@@ -312,6 +297,21 @@ class BusinessController extends Controller
                                 $modelVerify->fire_safety_date = $modelVerify->date; 
                                 
                             }
+
+            //update document_status
+        for($i = 0; $i < sizeof($modelVerify); $i++ ){
+            // $doc = Document::find()
+            //     ->where(['business_id' => $modelVerify[$i]["business_id"]])
+            //     ->one();
+
+            if((trim($modelVerify->barangay_clearance_status, " ") == "Approved") && (trim($modelVerify->zoning_clearance_status, " ") == "Approved") && (trim($modelVerify->sanitary_clearance_status, " ") == "Approved") && (trim($modelVerify->occupancy_permit_status, " ") == "Approved") && (trim($modelVerify->fire_safety_status, " ") == "Approved")){
+                $modelVerify->document_status = "Approved" ;
+            }else{
+                $modelVerify->document_status = "Pending" ;
+            }
+            $modelVerify->save();
+        }
+
             $modelVerify->save();
             return $this->render('verifydoc', [
             'modelVerify' => $modelVerify

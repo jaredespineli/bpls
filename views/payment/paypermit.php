@@ -65,6 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?= $form->field($model, 'or_number')->textInput(['value' => $model->or_number]) ?>
 	<?= $form->field($model, 'date')->textInput(['value' => $model->date]) ?>
 	<?= $form->field($model, 'received_by')->textInput(['value' => $model->received_by]) ?>
+    <?= $form->field($model, 'officialreceipt')->fileInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Pay Now',['class' => 'btn btn-success']) ?>

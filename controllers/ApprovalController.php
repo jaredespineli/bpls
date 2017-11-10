@@ -37,7 +37,39 @@ class ApprovalController extends \yii\web\Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
-            }      
+            }
+
+        //get all approval
+        $modelApproval =  Yii::$app->db->createCommand('SELECT * from approval')
+            ->queryAll();
+
+        for($i = 0; $i < sizeof($modelApproval); $i++){
+            $approve = Approval::find()
+                ->where(['approval_id' => $modelApproval[$i]["approval_id"]])
+                ->one();
+
+            $modelBusiness = Business::find()
+                ->where(['business_id' => $approve->business_id])
+                ->one();
+
+            $modelAssess =  Assessment::find()
+                    ->where(['business_id' => $modelBusiness->business_id])
+                    ->one();                
+
+            $modelPayment =  Payment::find()
+                    ->where(['and', ['assessment_id' => $modelAssess->assessment_id], ['payment_quarter' => 0]])      
+                    ->one();
+
+            $modelDoc =  Document::find()
+                    ->where(['business_id' => $modelBusiness->business_id   ])      
+                    ->one();
+
+            if((trim($modelDoc->document_status, " ") == 'Approved') && (!(is_null($modelPayment))) && (!(is_null($modelPayment->payment_kind)))){
+                $approve->approval_status = "Approved";
+            }
+
+            $approve->save();
+        }
 
         $searchModel = new ApprovalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -165,8 +197,10 @@ class ApprovalController extends \yii\web\Controller
                 $this->layout = 'taxpayer';
             }      
 
+        $model = $this->findModel($id);    
+
         $modelBusiness =  Business::find()
-        		->where(['business_id' => $id])
+                ->where(['business_id' => $model->business_id])
                 ->one();
 
         $modelAssess =  Assessment::find()
@@ -182,6 +216,7 @@ class ApprovalController extends \yii\web\Controller
                 ->one();
 
         return $this->render('status', [
+                'model' => $model,
                 'modelBusiness' => $modelBusiness,
                 'modelAssess' => $modelAssess,
                 'modelPayment' => $modelPayment,

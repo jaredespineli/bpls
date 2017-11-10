@@ -42,8 +42,8 @@ class Approval extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['action_date', 'approval_date', 'issue_date', 'next_renewal_date', 'sys_entry_date'], 'safe'],
-            [['account_holder_id', 'business_id'], 'integer'],
+            [['action_date', 'approval_date', 'issue_date', 'sys_entry_date'], 'safe'],
+            [['account_holder_id', 'business_id', 'next_renewal_date'], 'integer'],
             [['business_id'], 'required'],
             [['sic_code', 'property_index_code', 'postal_code', 'full_business_name', 'remarks', 'approval_status', 'business_reg_num', 'business_name'], 'string', 'max' => 255],
             [['business_id'], 'exist', 'skipOnError' => true, 'targetClass' => Business::className(), 'targetAttribute' => ['business_id' => 'business_id']],

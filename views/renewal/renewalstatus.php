@@ -31,7 +31,7 @@ $modelBusiness =  Business::find()
                 ->where(['business_id' => $modelBusiness->business_id])
                 ->one();
 ?>
-<div class="business-verify">
+<div class="renewal-status">
 
     <div>
         <h3><?= Html::encode('Business Name: ' . $this->title) ?></h3>
@@ -72,6 +72,24 @@ $modelBusiness =  Business::find()
                     }else{
                         echo "<td>" . Html::a('Pending', ['business/verifydoc', 'id' => $modelDoc->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
+                    
+                echo "</tr>
+
+                <tr>                    
+                    <td>Business Status</td>";
+
+                        date_default_timezone_set('Asia/Manila');
+                        $yearnow = date('Y');
+
+                        if($modelApproval->next_renewal_date > $yearnow){
+                            $modelBusiness->isActive = 0;
+                            $modelBusiness->business_status = "Inactive";
+                            echo "<td>". $modelBusiness->business_status ."</td>";
+                        }else{
+                            $modelBusiness->isActive = 1;
+                            $modelBusiness->business_status = "Active";       
+                            echo "<td>". $modelBusiness->business_status ."</td>";                                     
+                        }
                     
                 echo "</tr>
 

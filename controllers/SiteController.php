@@ -80,6 +80,8 @@ class SiteController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }     
         } 
 
@@ -191,6 +193,8 @@ class SiteController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }         
 
         $model = new PasswordForm();

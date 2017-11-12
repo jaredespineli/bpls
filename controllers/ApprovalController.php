@@ -18,6 +18,8 @@ use app\models\RenewalSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\mpdf\Pdf;
+
 
 /**
  * ApprovalController implements the CRUD actions for Approval model.
@@ -37,9 +39,9 @@ class ApprovalController extends \yii\web\Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
-            }
+            }    
 
-        //get all approval
+        //update approval_status
         $modelApproval =  Yii::$app->db->createCommand('SELECT * from approval')
             ->queryAll();
 
@@ -70,6 +72,7 @@ class ApprovalController extends \yii\web\Controller
 
             $approve->save();
         }
+  
 
         $searchModel = new ApprovalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -152,7 +155,7 @@ class ApprovalController extends \yii\web\Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
-            }          	
+            }           
 
         $model = $this->findModel($id);
 
@@ -195,9 +198,13 @@ class ApprovalController extends \yii\web\Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
-            }      
+            }
 
-        $model = $this->findModel($id);    
+        $model = $this->findModel($id); 
+
+        if($model->load(Yii::$app->request->post())){
+            $model->save();
+        }    
 
         $modelBusiness =  Business::find()
                 ->where(['business_id' => $model->business_id])
@@ -212,7 +219,7 @@ class ApprovalController extends \yii\web\Controller
                 ->one();
 
         $modelDoc =  Document::find()
-                ->where(['business_id' => $modelBusiness->business_id	])      
+                ->where(['business_id' => $modelBusiness->business_id   ])      
                 ->one();
 
         return $this->render('status', [
@@ -222,6 +229,43 @@ class ApprovalController extends \yii\web\Controller
                 'modelPayment' => $modelPayment,
                 'modelDoc' => $modelDoc,
             ]);
+    }
+
+    public function actionBusinesspermit($id) //id == business_id
+    {   
+        $modelBusiness =  Yii::$app->db->createCommand('SELECT * from business')
+            ->queryAll();
+
+        for($i = 0; $i < sizeof($modelBusiness); $i++){
+            $modelBusiness[$i]["permit_no"] = $modelBusiness[$i]["permit_no"] + 1;
+            $business = Business::find()
+                ->where(['business_id' => $id])
+                ->one();
+            $business->save();
+        }
+
+
+        $model = Business::find()
+            ->where(['business_id' => $id])
+            ->one();
+
+        $modelApproval = Approval::find()
+            ->where(['business_id' => $id])
+            ->one();
+
+        $pdf = new Pdf([ 
+            'format' => Pdf::FORMAT_LETTER, 
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            'destination' => Pdf::DEST_BROWSER,
+        ]);
+    
+        $pdf->content = $this->renderPartial('businesspermit', [
+            'model' => $model,
+            'modelApproval' => $modelApproval,
+        ]);
+
+        return $pdf->render();
+
     }
 
     /**

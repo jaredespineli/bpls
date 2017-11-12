@@ -53,7 +53,7 @@ class Document extends \yii\db\ActiveRecord
         return [
             [['document_status', 'business_id'], 'required'],
             [['business_id'], 'integer'],
-            [['document_status', 'received_by', 'date', 'barangay_clearance_status', 'zoning_clearance_status', 'sanitary_clearance_status', 'occupancy_permit_status', 'fire_safety_status', 'barangay_clearance_reason', 'zoning_clearance_reason', 'sanitary_clearance_reason', 'occupancy_permit_reason', 'fire_safety_reason', 'barangay_clearance_received_by', 'zoning_clearance_received_by', 'sanitary_clearance_received_by', 'occupancy_permit_received_by', 'fire_safety_received_by', 'barangay_clearance_date', 'zoning_clearance_date', 'sanitary_clearance_date', 'occupancy_permit_date', 'fire_safety_date'], 'string', 'max' => 255],
+            [['document_status', 'received_by', 'date', 'barangay_clearance_status', 'zoning_clearance_status', 'sanitary_clearance_status', 'occupancy_permit_status', 'fire_safety_status', 'barangay_clearance_reason', 'zoning_clearance_reason', 'sanitary_clearance_reason', 'occupancy_permit_reason', 'fire_safety_reason', 'barangay_clearance_received_by', 'zoning_clearance_received_by', 'sanitary_clearance_received_by', 'occupancy_permit_received_by', 'fire_safety_received_by', 'barangay_clearance_date', 'zoning_clearance_date', 'sanitary_clearance_date', 'occupancy_permit_date', 'fire_safety_date', 'barangay_clearance', 'zoning_clearance', 'sanitary_clearance', 'occupancy_permit', 'fire_safety'], 'string', 'max' => 255],
             [['business_id'], 'exist', 'skipOnError' => true, 'targetClass' => Business::className(), 'targetAttribute' => ['business_id' => 'business_id']],
         ];
     }
@@ -89,6 +89,10 @@ class Document extends \yii\db\ActiveRecord
             'sanitary_clearance_date' => 'Sanitary Clearance Date',
             'occupancy_permit_date' => 'Occupancy Permit Date',
             'fire_safety_date' => 'Fire Safety Date',
+            'barangay_clearance' => 'Barangay Clearance',
+            'sanitary_clearance' => 'Sanitary Clearance',
+            'occupancy_permit' => 'Occupancy Permit',
+            'fire_safety' => 'Fire Safety Inspection Certificate',            
         ];
     }
 

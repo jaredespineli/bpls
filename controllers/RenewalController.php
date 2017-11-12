@@ -55,10 +55,9 @@ class RenewalController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
-
-        $searchModel = new RenewalSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         //get all data of renewal
         $modelRenewal =  Yii::$app->db->createCommand('SELECT * from renewal')
@@ -68,25 +67,42 @@ class RenewalController extends Controller
         //check system date, compare sa date now -- if lagpas na sa now, inactive else active
         //sa loob ng for loop kukunin yung katumbas na approval ng renewal gamit ang business_id
         for($i = 0; $i < sizeof($modelRenewal); $i++){
-            $modelApproval =  Approval::find()
-                ->where(['business_id' => $modelRenewal[$i]["business_id"]])      
+            $renewal = Renewal::find()
+                    ->where(['renewal_id' => $modelRenewal[$i]["renewal_id"]])      
+                    ->one(); 
+
+            if(trim($renewal->business_status, " ") == 'Inactive'){ //not sure
+                $modelApproval = Approval::find()
+                ->where(['business_id' => $renewal["business_id"]])      
                 ->one();    
             
-            date_default_timezone_set('Asia/Manila');
-            $yearnow = date('Y');                        
-            //compare
-            $modelBusiness = Business::find()
-                ->where(['business_id' => $modelRenewal[$i]["business_id"]])      
-                ->one();
-                
-            if($modelApproval->next_renewal_date > $yearnow){
-                $modelBusiness->isActive = 0;
-                $modelBusiness->business_status = "Inactive";
-            }else{
-                $modelBusiness->isActive = 1;
-                $modelBusiness->business_status = "Active";                                            
+                date_default_timezone_set('Asia/Manila');
+                $yearnow = date('Y'); 
+
+                //compare
+                $modelBusiness = Business::find()
+                    ->where(['business_id' => $renewal["business_id"]])      
+                    ->one();
+                    
+                if($modelApproval->next_renewal_date < $yearnow){
+                    $modelBusiness->isActive = 0;
+                    $modelBusiness->save();   
+                    $renewal->business_status = "Inactive";
+                    $renewal->renewal_status = "Pending";
+                    $renewal->save();  
+
+                }else{
+                    $modelBusiness->isActive = 1;
+                    $modelBusiness->save();
+                    $renewal->business_status = "Active";
+                    $renewal->renewal_status = "Approved";     
+                    $renewal->save();                                                             
+                }
             }
         }
+
+        $searchModel = new RenewalSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -111,6 +127,8 @@ class RenewalController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         return $this->render('view', [
@@ -135,6 +153,8 @@ class RenewalController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         $model = new Renewal();
@@ -166,6 +186,8 @@ class RenewalController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         $model = $this->findModel($id);
@@ -204,11 +226,33 @@ class RenewalController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
+
+        $model = Renewal::find()
+                ->where(['business_id' => $id])
+                ->one();
 
         $modelBusiness =  Business::find()
                 ->where(['business_id' => $id])
                 ->one();
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model = Renewal::find()
+                ->where(['business_id' => $id])
+                ->one();
+
+            $modelBusiness =  Business::find()
+                ->where(['business_id' => $model->business_id])
+                ->one();
+
+            $modelBusiness->isActive = 1;
+            $modelBusiness->save();
+            $model->business_status = "Active";
+            $model->renewal_status = "Approved";
+            $model->save();
+        }
 
         $modelAssess =  Assessment::find()
                 ->where(['business_id' => $modelBusiness->business_id])
@@ -227,6 +271,7 @@ class RenewalController extends Controller
                 ->one();
 
         return $this->render('renewalstatus', [
+                'model' => $model,
                 'modelBusiness' => $modelBusiness,
                 'modelAssess' => $modelAssess,
                 'modelPayment' => $modelPayment,
@@ -234,6 +279,22 @@ class RenewalController extends Controller
                 'modelApproval' => $modelApproval,
             ]);
     }
+
+    // public function renew_status($id){
+    //         $model = Renewal::find()
+    //             ->where(['renewal_id' => $id])
+    //             ->one();
+
+    //         $modelBusiness =  Business::find()
+    //             ->where(['business_id' => $model->business_id])
+    //             ->one();
+
+    //         $modelBusiness->isActive = 1;
+    //         $modelBusiness->save();
+    //         $model->business_status = "Active";
+    //         $model->renewal_status = "Approved";
+    //         $model->save();
+    // }
 
     /**
      * Finds the Renewal model based on its primary key value.

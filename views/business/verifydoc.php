@@ -52,7 +52,8 @@ $this->params['breadcrumbs'][] = $this->title;
         echo "<table>
                <tr>                    
                     <th>Documents</th>
-                    <th>Status</th>                    
+                    <th>Status</th>          
+                    <th>Document Image</th>          
                </tr>
                <tr>                    
                     <td>Barangay Clearance</td>";
@@ -61,6 +62,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo "<td>". $modelVerify->barangay_clearance_status ."</td>";
                     }else{
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
+                    }
+
+                    if(trim($modelVerify->barangay_clearance_status, " ") == 'Approved'){
+                        echo "<td>"; ?>
+                        <?= Html::a('View Document', ['barangayclearance', 'id' => $modelVerify->business_id], ['class' => 'btn btn-primary']) ?>
+                        <?php echo "</td>";
+
+                        }else{
+                        echo "<td></td>";
                     }
                     
                 echo "</tr>
@@ -73,6 +83,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
 
+                    if(trim($modelVerify->zoning_clearance_status, " ") == 'Approved'){
+                        echo "<td>"; ?>
+                        <?= Html::a('View Document', ['zoningclearance', 'id' => $modelVerify->business_id], ['class' => 'btn btn-primary']) ?>
+                        <?php echo "</td>";
+
+                        }else{
+                        echo "<td></td>";
+                    }
+
                 echo "</tr>
                 <tr>
                     <td>Sanitary Clearance</td>";
@@ -81,6 +100,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo "<td>". $modelVerify->sanitary_clearance_status ."</td>";
                     }else{
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
+                    }
+
+                    if(trim($modelVerify->document_status, " ") == 'Approved'){
+                        echo "<td>"; ?>
+                        <?= Html::a('View Document', ['sanitaryclearance', 'id' => $modelVerify->business_id], ['class' => 'btn btn-primary']) ?>
+                        <?php echo "</td>";
+
+                        }else{
+                        echo "<td></td>";
                     }
 
                 echo "</tr>
@@ -93,6 +121,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
 
+                    if(trim($modelVerify->document_status, " ") == 'Approved'){
+                        echo "<td>"; ?>
+                        <?= Html::a('View Document', ['occupancypermit', 'id' => $modelVerify->business_id], ['class' => 'btn btn-primary']) ?>
+                        <?php echo "</td>";
+
+                        }else{
+                        echo "<td></td>";
+                    }
+
                 echo "</tr>
                 <tr>
                     <td>Fire Safety Inspection Certificate</td>";
@@ -103,7 +140,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
 
-                echo "</tr>";
+                    if(trim($modelVerify->document_status, " ") == 'Approved'){
+                        echo "<td>"; ?>
+                        <?= Html::a('View Document', ['firesafety', 'id' => $modelVerify->business_id], ['class' => 'btn btn-primary']) ?>
+                        <?php echo "</td>";
+
+                        }else{
+                        echo "<td></td>";
+                    }
+
+                echo "</tr>";                
+                
 
         echo "</table>";  
 

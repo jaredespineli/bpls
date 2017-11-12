@@ -23,7 +23,8 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 
 $this->title = $model->business_name;
-$this->params['breadcrumbs'][] = ['label' => 'Official Receipt', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Payments', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Payment', 'url' => ['paytable', 'id' => $model->payment_id]];
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -33,8 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php $form = ActiveForm::begin(); ?>
-	
-	<?php
+    
+    <?php
         
         
         echo "Property Owner: <strong>" . $model->president_name . "</strong><br>";
@@ -62,9 +63,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>    
     <br>
     <br>
-	<?= $form->field($model, 'or_number')->textInput(['value' => $model->or_number]) ?>
-	<?= $form->field($model, 'date')->textInput(['value' => $model->date]) ?>
-	<?= $form->field($model, 'received_by')->textInput(['value' => $model->received_by]) ?>
+    <?= $form->field($model, 'or_number')->textInput(['value' => $model->or_number]) ?>
+    <?= $form->field($model, 'date')->textInput(['value' => $model->date]) ?>
+    <?= $form->field($model, 'received_by')->textInput(['value' => $model->received_by]) ?>
     <?= $form->field($model, 'officialreceipt')->fileInput() ?>
 
     <div class="form-group">

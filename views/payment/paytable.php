@@ -22,7 +22,7 @@ use app\models\Payment;
 /* @var $model app\models\Payment */
 
 $this->title = $modelPayment[0]["business_name"];
-$this->params['breadcrumbs'][] = ['label' => 'Statements of Account', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Payments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -74,6 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th>Received By</th>   
                     <th>Date Received</th>                                    
                     <th>Payment Status</th>
+                    <th>Official Receipt</th>
                 </tr>";
 
 
@@ -85,6 +86,14 @@ $this->params['breadcrumbs'][] = $this->title;
             echo "<td>" . $modelPayment[$counter]["received_by"] . "</td>";
             echo "<td>" . $modelPayment[$counter]["date"] . "</td>";
             echo "<td>" . $modelPayment[$counter]["payment_status_per"] . "</td>";
+            if(trim($modelPayment[$counter]["payment_status_per"], " ") == 'Paid'){
+                echo "<td>"; ?>
+                <?= Html::a('Official Receipt', ['viewofficialreceipt', 'id' => $modelPayment[$counter]["payment_id"]], ['class' => 'btn btn-primary']) ?>
+                <?php echo "</td>";
+
+                }else{
+                echo "<td></td>";
+            }
             echo "</tr>";
         }
 

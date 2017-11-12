@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BusinessSearch */
@@ -21,6 +22,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions' => function($model){
+            $url = Url::to(['business/update', 'id' => $model["business_id"]]);
+            return ['onclick' => "window.location.href='{$url}'"];
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -69,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'postal_code',
             // 'business_id',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>

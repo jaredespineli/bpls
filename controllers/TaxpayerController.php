@@ -45,6 +45,8 @@ class TaxpayerController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         $searchModel = new TaxpayerSearch();
@@ -73,6 +75,8 @@ class TaxpayerController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         return $this->render('view', [
@@ -98,6 +102,8 @@ class TaxpayerController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         $model = new Taxpayer();
@@ -129,6 +135,8 @@ class TaxpayerController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         $model = $this->findModel($id);
@@ -160,6 +168,8 @@ class TaxpayerController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
             
         $this->findModel($id)->delete();

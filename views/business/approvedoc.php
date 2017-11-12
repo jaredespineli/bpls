@@ -43,33 +43,39 @@ $this->params['breadcrumbs'][] = $this->title;
                        <tr>                    
                             <th>Documents</th>
                             <th>Status</th>
-                            <th>Reasons</th>                    
+                            <th>Reasons</th>  
+                            <th>Document Upload</th>                  
                        </tr>  
                        
                        <tr>
                             <td>Barangay Clearance</td>
                             <td><br>";?> <?= $form->field($modelVerify, 'barangay_clearance_status')->radioList(array('Approved'=>'Approved', 'Pending'=>'Pending'))->label(false); ?> </td>                            
                  <?php echo "<td>";?> <br> <?= $form->field($modelVerify, 'barangay_clearance_reason')->textarea()->label(false); ?> </td>
+                 <?php echo "<td>" ;?><br><center><?= $form->field($modelVerify, 'barangay_clearance')->fileInput()->label(false) ?></center> </td>    
                        </tr>    
                        <tr>
                             <td>Zoning Clearance</td>
                             <td><br><?= $form->field($modelVerify, 'zoning_clearance_status')->radioList(array('Approved'=>'Approved', 'Pending'=>'Pending'))->label(false); ?></td>                            
                  <?php echo "<td>";?><?= $form->field($modelVerify, 'zoning_clearance_reason')->textarea()->label(false); ?> </td>
+                 <?php echo "<td>" ;?><br><center><?= $form->field($modelVerify, 'zoning_clearance')->fileInput()->label(false) ?></center> </td>    
                        </tr>  
                        <tr>
                             <td>Sanitary Clearance</td>
                             <td><br><?= $form->field($modelVerify, 'sanitary_clearance_status')->radioList(array('Approved'=>'Approved', 'Pending'=>'Pending'))->label(false); ?></td>                            
                  <?php echo "<td>";?><?= $form->field($modelVerify, 'sanitary_clearance_reason')->textarea()->label(false); ?></td>
+                 <?php echo "<td>" ;?><br><center><?= $form->field($modelVerify, 'sanitary_clearance')->fileInput()->label(false) ?></center> </td>    
                        </tr>  
                        <tr>
                             <td>Occupancy Permit</td>
                             <td><br><?= $form->field($modelVerify, 'occupancy_permit_status')->radioList(array('Approved'=>'Approved', 'Pending'=>'Pending'))->label(false); ?></td>                            
                  <?php echo "<td>";?><?= $form->field($modelVerify, 'occupancy_permit_reason')->textarea()->label(false); ?></td>
+                 <?php echo "<td>" ;?><br><center><?= $form->field($modelVerify, 'occupancy_permit')->fileInput()->label(false) ?></center> </td>    
                        </tr>  
                        <tr>
                             <td>Fire Safety Inspection Certificate</td>   
                             <td><br><?= $form->field($modelVerify, 'fire_safety_status')->radioList(array('Approved'=>'Approved', 'Pending'=>'Pending'))->label(false); ?></td>                            
                  <?php echo "<td>";?><?= $form->field($modelVerify, 'fire_safety_reason')->textarea()->label(false); ?></td>
+                 <?php echo "<td>" ;?><br><center><?= $form->field($modelVerify, 'fire_safety')->fileInput()->label(false) ?></center> </td>    
                        </tr>
 
                 </table>      
@@ -78,6 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($modelVerify, 'received_by')->textInput(['maxlength' => true]) ?>
         <?= $form->field($modelVerify, 'date')->textInput(['maxlength' => true]) ?>
+        
 
         <div class="form-group">
             <?= Html::submitButton('Submit', ['class' => 'btn btn-success']) ?>

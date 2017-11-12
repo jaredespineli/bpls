@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\web\UploadedFile;
 use app\models\Business;
 use app\models\BusinessSearch;
 use yii\web\Controller;
@@ -49,10 +50,18 @@ class BusinessController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         $searchModel = new BusinessSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if(trim(Yii::$app->user->identity->user_type, " ") == 'Taxpayer'){
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $dataProvider->query->andWhere(['user_id'=> Yii::$app->user->identity->user_id]);
+        }else{
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        }
+        
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -77,6 +86,8 @@ class BusinessController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         return $this->render('view', [
@@ -101,11 +112,26 @@ class BusinessController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         $model = new Business();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) ) {
+            $model->user_id = Yii::$app->user->identity->user_id;
+            $model->isActive = 1;
+
+             $modelBusiness =  Yii::$app->db->createCommand('SELECT * from business')
+                    ->queryAll();
+
+            if(is_null($modelBusiness)){
+                $model->permit_no = 1;
+            }else{
+                $model->permit_no = $modelBusiness[0]["permit_no"]
+            }
+
+            $model->save();
 
             $modelAssess = new Assessment();
             $modelAssess->business_id = $model->business_id;
@@ -134,6 +160,12 @@ class BusinessController extends Controller
             $modelRenew->business_id = $model->business_id;  
             $modelRenew->business_name = $model->business_name;            
             $modelRenew->renewal_status = "Pending";
+            if($model->isActive == 1){
+                $modelRenew->business_status = "Active";
+            }else{
+                $modelRenew->business_status = "Inactive";
+            }
+           
             $modelRenew->save();
 
 
@@ -164,6 +196,8 @@ class BusinessController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         $model = $this->findModel($id);
@@ -195,6 +229,8 @@ class BusinessController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         $this->findModel($id)->delete();
@@ -217,6 +253,8 @@ class BusinessController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         //get all business
@@ -240,6 +278,8 @@ class BusinessController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }
 
         $modelVerify = Document::find()
@@ -263,6 +303,8 @@ class BusinessController extends Controller
                 $this->layout = 'treasurer';
             }else if ($user_type === 'Taxpayer'){
                 $this->layout = 'taxpayer';
+            }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
             }   
 
         $modelVerify = Document::find()
@@ -275,7 +317,37 @@ class BusinessController extends Controller
         $occupancy_permit_status = $modelVerify->occupancy_permit_status;
         $fire_safety_status = $modelVerify->fire_safety_status;
 
-       if ($modelVerify->load(Yii::$app->request->post())) {            
+       if ($modelVerify->load(Yii::$app->request->post())) {  
+            //barangay clearance
+            $modelVerify->barangay_clearance = UploadedFile::getInstance($modelVerify, 'barangay_clearance');
+            $extension = $modelVerify->barangay_clearance->extension;
+            $modelVerify->barangay_clearance->saveAs('barangayclearance_uploads/' . $modelVerify->barangay_clearance->baseName . '.' . $modelVerify->barangay_clearance->extension);            
+            $modelVerify->barangay_clearance = $modelVerify->barangay_clearance->name;
+
+            //zoning clearance
+            $modelVerify->zoning_clearance = UploadedFile::getInstance($modelVerify, 'zoning_clearance');
+            $extension = $modelVerify->zoning_clearance->extension;
+            $modelVerify->zoning_clearance->saveAs('zoningclearance_uploads/' . $modelVerify->zoning_clearance->baseName . '.' . $modelVerify->zoning_clearance->extension);            
+            $modelVerify->zoning_clearance = $modelVerify->zoning_clearance->name;
+
+            //sanitary clearance
+            $modelVerify->sanitary_clearance = UploadedFile::getInstance($modelVerify, 'sanitary_clearance');
+            $extension = $modelVerify->sanitary_clearance->extension;
+            $modelVerify->sanitary_clearance->saveAs('sanitaryclearance_uploads/' . $modelVerify->sanitary_clearance->baseName . '.' . $modelVerify->sanitary_clearance->extension);            
+            $modelVerify->sanitary_clearance = $modelVerify->sanitary_clearance->name;            
+
+            //occupancy permit
+            $modelVerify->occupancy_permit = UploadedFile::getInstance($modelVerify, 'occupancy_permit');
+            $extension = $modelVerify->occupancy_permit->extension;
+            $modelVerify->occupancy_permit->saveAs('occupancypermit_uploads/' . $modelVerify->occupancy_permit->baseName . '.' . $modelVerify->occupancy_permit->extension);            
+            $modelVerify->occupancy_permit = $modelVerify->occupancy_permit->name;
+
+            //fire safety
+            $modelVerify->fire_safety = UploadedFile::getInstance($modelVerify, 'fire_safety');
+            $extension = $modelVerify->fire_safety->extension;
+            $modelVerify->fire_safety->saveAs('firesafety_uploads/' . $modelVerify->fire_safety->baseName . '.' . $modelVerify->fire_safety->extension);            
+            $modelVerify->fire_safety = $modelVerify->fire_safety->name;
+
             if(trim($barangay_clearance_status, " ") == 'Pending' && trim($modelVerify->barangay_clearance_status, " ") == 'Approved'){
                 $modelVerify->barangay_clearance_received_by = $modelVerify->received_by;
                 $modelVerify->barangay_clearance_date = $modelVerify->date;                 
@@ -299,11 +371,7 @@ class BusinessController extends Controller
                             }
 
             //update document_status
-        for($i = 0; $i < sizeof($modelVerify); $i++ ){
-            // $doc = Document::find()
-            //     ->where(['business_id' => $modelVerify[$i]["business_id"]])
-            //     ->one();
-
+        for($i = 0; $i < sizeof($modelVerify); $i++ ){            
             if((trim($modelVerify->barangay_clearance_status, " ") == "Approved") && (trim($modelVerify->zoning_clearance_status, " ") == "Approved") && (trim($modelVerify->sanitary_clearance_status, " ") == "Approved") && (trim($modelVerify->occupancy_permit_status, " ") == "Approved") && (trim($modelVerify->fire_safety_status, " ") == "Approved")){
                 $modelVerify->document_status = "Approved" ;
             }else{
@@ -322,6 +390,121 @@ class BusinessController extends Controller
         return $this->render('approvedoc', [
             'modelVerify' => $modelVerify
         ]);
+    }
+
+     public function actionBarangayclearance($id){
+         $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+        if($user_type == 'Admin'){
+            $this->layout = 'admin';                
+        }else if($user_type === 'Assessor'){
+            $this->layout = 'assessor';
+        }else if($user_type === 'Treasurer'){
+            $this->layout = 'treasurer';
+        }else if ($user_type === 'Taxpayer'){
+            $this->layout = 'taxpayer';
+        }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
+            }
+
+        // $model = $this->findModel($id);
+        $model =  Document::find()
+                ->where(['business_id' => $id])
+                ->one();  
+
+        return $this->render('barangayclearance', ['model' => $model]);
+    }
+
+    public function actionZoningclearance($id){
+         $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+        if($user_type == 'Admin'){
+            $this->layout = 'admin';                
+        }else if($user_type === 'Assessor'){
+            $this->layout = 'assessor';
+        }else if($user_type === 'Treasurer'){
+            $this->layout = 'treasurer';
+        }else if ($user_type === 'Taxpayer'){
+            $this->layout = 'taxpayer';
+        }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
+            }
+
+        // $model = $this->findModel($id);
+        $model =  Document::find()
+                ->where(['business_id' => $id])
+                ->one();  
+
+        return $this->render('zoningclearance', ['model' => $model]);
+    }
+
+    public function actionSanitaryclearance($id){
+         $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+        if($user_type == 'Admin'){
+            $this->layout = 'admin';                
+        }else if($user_type === 'Assessor'){
+            $this->layout = 'assessor';
+        }else if($user_type === 'Treasurer'){
+            $this->layout = 'treasurer';
+        }else if ($user_type === 'Taxpayer'){
+            $this->layout = 'taxpayer';
+        }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
+            }
+
+        // $model = $this->findModel($id);
+        $model =  Document::find()
+                ->where(['business_id' => $id])
+                ->one();  
+
+        return $this->render('sanitaryclearance', ['model' => $model]);
+    }
+
+    public function actionOccupancypermit($id){
+         $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+        if($user_type == 'Admin'){
+            $this->layout = 'admin';                
+        }else if($user_type === 'Assessor'){
+            $this->layout = 'assessor';
+        }else if($user_type === 'Treasurer'){
+            $this->layout = 'treasurer';
+        }else if ($user_type === 'Taxpayer'){
+            $this->layout = 'taxpayer';
+        }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
+            }
+
+        // $model = $this->findModel($id);
+        $model =  Document::find()
+                ->where(['business_id' => $id])
+                ->one();  
+
+        return $this->render('occupancypermit', ['model' => $model]);
+    }
+
+    public function actionFiresafety($id){
+         $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+        if($user_type == 'Admin'){
+            $this->layout = 'admin';                
+        }else if($user_type === 'Assessor'){
+            $this->layout = 'assessor';
+        }else if($user_type === 'Treasurer'){
+            $this->layout = 'treasurer';
+        }else if ($user_type === 'Taxpayer'){
+            $this->layout = 'taxpayer';
+        }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
+            }
+
+        // $model = $this->findModel($id);
+        $model =  Document::find()
+                ->where(['business_id' => $id])
+                ->one();  
+
+        return $this->render('firesafety', ['model' => $model]);
     }
 
 

@@ -145,7 +145,9 @@ class PaymentController extends Controller
                 $model->save();
 
                 if(trim($model->payment_kind, " ") == 'Annually'){
-                    $model->assessed_value = $model->grand_total; //update assessed_value ng payment_quarter == 0           
+                    $model->assessed_value = $model->grand_total; //update assessed_value ng payment_quarter == 0 
+                    $model->save();
+          
                 }                
                 else if(trim($model->payment_kind, " ") == 'Quarterly'){
                     //create ng 3 payment with same assessment_id
@@ -302,34 +304,40 @@ class PaymentController extends Controller
        return $this->render('paypermit', ['model' => $model]);
     }
 
-    public function actionOfficialreceipt($id)
-    {
-        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+    public function actionViewofficialreceipt($id){
+         $user_type = trim(Yii::$app->user->identity->user_type, " ");
 
-            if($user_type == 'Admin'){
-                $this->layout = 'admin';                
-            }else if($user_type === 'Assessor'){
-                $this->layout = 'assessor';
-            }else if($user_type === 'Treasurer'){
-                $this->layout = 'treasurer';
-            }else if ($user_type === 'Taxpayer'){
-                $this->layout = 'taxpayer';
-            }
-                
+        if($user_type == 'Admin'){
+            $this->layout = 'admin';                
+        }else if($user_type === 'Assessor'){
+            $this->layout = 'assessor';
+        }else if($user_type === 'Treasurer'){
+            $this->layout = 'treasurer';
+        }else if ($user_type === 'Taxpayer'){
+            $this->layout = 'taxpayer';
+        }
+
         $model = $this->findModel($id);
 
-        $pdf = new Pdf([ 
-            'orientation' => Pdf::ORIENT_PORTRAIT,
-            'format' => Pdf::FORMAT_A4, 
-        ]);
-    
-        $pdf->content = $this->renderPartial('officialreceipt', [
-            'model' => $model,
-        ]);
-
-        return $pdf->render();
-
+        return $this->render('viewofficialreceipt', ['model' => $model]);
     }
+
+    // public function actionOfficialreceipt($id)
+    // {           
+    //     $model = $this->findModel($id);
+
+    //     $pdf = new Pdf([ 
+    //         'orientation' => Pdf::ORIENT_PORTRAIT,
+    //         'format' => Pdf::FORMAT_A4, 
+    //     ]);
+    
+    //     $pdf->content = $this->renderPartial('officialreceipt', [
+    //         'model' => $model,
+    //     ]);
+
+    //     return $pdf->render();
+
+    // }
 
     /**
      * Finds the Payment model based on its primary key value.

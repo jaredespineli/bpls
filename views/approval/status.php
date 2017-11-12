@@ -19,6 +19,7 @@ use yii\grid\GridView;
 use yii\helpers\Url;
 use app\models\Business;
 use app\models\Document;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PaymentSearch */
@@ -27,9 +28,9 @@ use app\models\Document;
 $this->title = 'Business Approval Status';
 $this->params['breadcrumbs'][] = $this->title;
 
-$modelBusiness =  Business::find()
-                ->where(['business_id' => $modelBusiness->business_id])
-                ->one();
+// $modelBusiness =  Business::find()
+//                 ->where(['business_id' => $modelBusiness->business_id])
+//                 ->one();
 ?>
 <div class="business-verify">
 
@@ -57,13 +58,14 @@ $modelBusiness =  Business::find()
                     <td>Payment</td>";
                     if(is_null($modelPayment)){
                         echo "<td>" . Html::a('Pending', ['assessment/update', 'id' => $modelAssess->assessment_id], ['class' => 'btn btn-primary']) . "</td>";
-                    }else{        
-                         if(trim($modelPayment->payment_kind, " ") == 'Quarterly' || trim($modelPayment->payment_kind, " ") == 'Bi-Annually' || trim($modelPayment->payment_kind, " ") == 'Annually'){
+                    }else{
+                        if(trim($modelPayment->payment_kind, " ") == 'Quarterly' || trim($modelPayment->payment_kind, " ") == 'Bi-Annually' || trim($modelPayment->payment_kind, " ") == 'Annually'){
                             echo "<td>". $modelPayment->payment_kind ."</td>";
                         }else{
-                            echo "<td>" . Html::a('Pending', ['payment/paytable', 'id' => $modelPayment->assessment_id], ['class' => 'btn btn-primary']) . "</td>";
+                            echo "<td>" . Html::a('Pending', ['payment/paytable', 'id' => $modelPayment->payment_id], ['class' => 'btn btn-primary']) . "</td>";
                         }
                     }
+                    
                     
                 echo "</tr>
 
@@ -76,17 +78,28 @@ $modelBusiness =  Business::find()
                         echo "<td>" . Html::a('Pending', ['business/verifydoc', 'id' => $modelDoc->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
                     
-                echo "</tr>
+                echo "</tr>";
 
-               </table>";          
+               echo "</table>";          
 
 
 echo "<br>";
 echo "<br>";
 
-            if(trim($model->approval_status, " ") == 'Approved'){ ?>                   
-                        <?= Html::a('Generate Business Permit', ['business/generate'], ['class' => 'btn btn-primary']) ?>                    
+            
+                if((trim($model->approval_status, " ") == 'Approved') && (!(is_null($model->next_renewal_date)))){ ?>  
+                    <?= Html::a('Generate Business Permit', ['businesspermit', 'id' => $model->business_id], ['class' => 'btn btn-primary', 'target'=>'_blank', 'data-toggle'=>'tooltip']) ?>                    
+                <?php }else{ ?>
+                    <?php $form = ActiveForm::begin(); ?>
+
+                    <?= $form->field($model, 'next_renewal_date')->textInput(['maxlength' => true]) ?>
+
+                    <div class="form-group">
+                        <?= Html::submitButton('Submit',['class' => 'btn btn-success']) ?>
+                    </div>
+
+                    <?php ActiveForm::end(); ?>
                 <?php }
             ?>
-                        
+
 </div>

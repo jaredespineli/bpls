@@ -31,7 +31,7 @@ class Renewal extends \yii\db\ActiveRecord
     {
         return [
             [['business_id'], 'integer'],
-            [['renewal_status', 'business_name', 'business_status'], 'string', 'max' => 255],
+            [['renewal_status', 'business_name', 'business_status', 'received_by'], 'string', 'max' => 255],
             [['business_id'], 'exist', 'skipOnError' => true, 'targetClass' => Business::className(), 'targetAttribute' => ['business_id' => 'business_id']],
         ];
     }

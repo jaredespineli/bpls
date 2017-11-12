@@ -19,6 +19,7 @@ use yii\grid\GridView;
 use yii\helpers\Url;
 use app\models\Business;
 use app\models\Document;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PaymentSearch */
@@ -27,9 +28,9 @@ use app\models\Document;
 $this->title = 'Business Renewal Status';
 $this->params['breadcrumbs'][] = $this->title;
 
-$modelBusiness =  Business::find()
-                ->where(['business_id' => $modelBusiness->business_id])
-                ->one();
+// $modelBusiness =  Business::find()
+//                 ->where(['business_id' => $modelBusiness->business_id])
+//                 ->one();
 ?>
 <div class="renewal-status">
 
@@ -67,7 +68,7 @@ $modelBusiness =  Business::find()
                 <tr>                    
                     <td>Documents</td>";
 
-                     if(trim($modelDoc->document_status, " ") == 'Approved'){
+                    if(trim($modelDoc->document_status, " ") == 'Approved'){
                         echo "<td>". $modelDoc->document_status ."</td>";
                     }else{
                         echo "<td>" . Html::a('Pending', ['business/verifydoc', 'id' => $modelDoc->document_id], ['class' => 'btn btn-primary']) . "</td>";
@@ -78,18 +79,20 @@ $modelBusiness =  Business::find()
                 <tr>                    
                     <td>Business Status</td>";
 
-                        date_default_timezone_set('Asia/Manila');
-                        $yearnow = date('Y');
+                    echo "<td>" . $model->business_status . "</td>";
 
-                        if($modelApproval->next_renewal_date > $yearnow){
-                            $modelBusiness->isActive = 0;
-                            $modelBusiness->business_status = "Inactive";
-                            echo "<td>". $modelBusiness->business_status ."</td>";
-                        }else{
-                            $modelBusiness->isActive = 1;
-                            $modelBusiness->business_status = "Active";       
-                            echo "<td>". $modelBusiness->business_status ."</td>";                                     
-                        }
+                        // date_default_timezone_set('Asia/Manila');
+                        // $yearnow = date('Y');
+
+                        // if($modelApproval->next_renewal_date > $yearnow){
+                        //     $modelBusiness->isActive = 0;
+                        //     $modelBusiness->business_status = "Inactive";
+                        //     echo "<td>". $modelBusiness->business_status ."</td>";
+                        // }else{
+                        //     $modelBusiness->isActive = 1;
+                        //     $modelBusiness->business_status = "Active";       
+                        //     echo "<td>". $modelBusiness->business_status ."</td>";                                     
+                        // }
                     
                 echo "</tr>
 
@@ -99,10 +102,15 @@ $modelBusiness =  Business::find()
 echo "<br>";
 echo "<br>";
 
-            
-                if((trim($modelPayment->payment_status, " ") == 'Paid') && trim($modelDoc->document_status, " ") == 'Approved'){?>                   
-                        <?= Html::a('Renew Business Permit', ['renewal/generate'], ['class' => 'btn btn-primary']) ?>                    
-                <?php }
-            ?>
+                if((trim($modelPayment->payment_status, " ") == 'Paid') && trim($modelDoc->document_status, " ") == 'Approved' && (trim($model->business_status, " ") == 'Inactive')){?>                   
+                    <?php $form = ActiveForm::begin(); ?>  
 
+                    <?= $form->field($model, 'received_by')->textInput(['maxlength' => true]) ?>              
+
+                    <div class="form-group">
+                        <?= Html::submitButton('Renew Business Permit',['class' => 'btn btn-success']) ?>
+                    </div>
+
+                    <?php ActiveForm::end(); ?> 
+                <?php } ?>
 </div>

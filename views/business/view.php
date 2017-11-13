@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="business-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>Business ID: <?= Html::encode($this->title) ?> | <?php echo $model->business_name?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->business_id], ['class' => 'btn btn-primary']) ?>                   
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'others_four_barcode',
             'tax_payment_type',
             //'sys_entry_date',
-            'status',
+            //'status',
             'full_address',
             'pay_mode',
             'postal_code',

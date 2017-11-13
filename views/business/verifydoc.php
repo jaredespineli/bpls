@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
 
-                    if(trim($modelVerify->barangay_clearance_status, " ") == 'Approved'){
+                    if(trim($modelVerify->barangay_clearance_status, " ") == 'Approved' && (!empty($modelVerify->barangay_clearance))){
                         echo "<td>"; ?>
                         <?= Html::a('View Document', ['barangayclearance', 'id' => $modelVerify->business_id], ['class' => 'btn btn-primary']) ?>
                         <?php echo "</td>";
@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
 
-                    if(trim($modelVerify->zoning_clearance_status, " ") == 'Approved'){
+                    if(trim($modelVerify->zoning_clearance_status, " ") == 'Approved' && (!empty($modelVerify->zoning_clearance))){
                         echo "<td>"; ?>
                         <?= Html::a('View Document', ['zoningclearance', 'id' => $modelVerify->business_id], ['class' => 'btn btn-primary']) ?>
                         <?php echo "</td>";
@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
 
-                    if(trim($modelVerify->document_status, " ") == 'Approved'){
+                    if(trim($modelVerify->document_status, " ") == 'Approved' && (!empty($modelVerify->sanitary_clearance))){
                         echo "<td>"; ?>
                         <?= Html::a('View Document', ['sanitaryclearance', 'id' => $modelVerify->business_id], ['class' => 'btn btn-primary']) ?>
                         <?php echo "</td>";
@@ -121,7 +121,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
 
-                    if(trim($modelVerify->document_status, " ") == 'Approved'){
+                    if(trim($modelVerify->document_status, " ") == 'Approved' && (!empty($modelVerify->occupancy_permit))){
                         echo "<td>"; ?>
                         <?= Html::a('View Document', ['occupancypermit', 'id' => $modelVerify->business_id], ['class' => 'btn btn-primary']) ?>
                         <?php echo "</td>";
@@ -140,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo "<td>" . Html::a('Approve', ['approvedoc', 'id' => $modelVerify->document_id], ['class' => 'btn btn-primary']) . "</td>";
                     }
 
-                    if(trim($modelVerify->document_status, " ") == 'Approved'){
+                    if(trim($modelVerify->document_status, " ") == 'Approved' && (!empty($modelVerify->fire_safety))){
                         echo "<td>"; ?>
                         <?= Html::a('View Document', ['firesafety', 'id' => $modelVerify->business_id], ['class' => 'btn btn-primary']) ?>
                         <?php echo "</td>";

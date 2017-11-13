@@ -122,13 +122,13 @@ class BusinessController extends Controller
             $model->user_id = Yii::$app->user->identity->user_id;
             $model->isActive = 1;
 
-             $modelBusiness =  Yii::$app->db->createCommand('SELECT * from business')
+            $modelBusiness =  Yii::$app->db->createCommand('SELECT * from business')
                     ->queryAll();
 
-            if(is_null($modelBusiness)){
+            if(sizeof($modelBusiness) == 0){
                 $model->permit_no = 1;
             }else{
-                $model->permit_no = $modelBusiness[0]["permit_no"]
+                $model->permit_no = $modelBusiness[0]["permit_no"];
             }
 
             $model->save();
@@ -319,34 +319,81 @@ class BusinessController extends Controller
 
        if ($modelVerify->load(Yii::$app->request->post())) {  
             //barangay clearance
+            // $modelVerify->barangay_clearance = UploadedFile::getInstance($modelVerify, 'barangay_clearance');
+            // $extension = $modelVerify->barangay_clearance->extension;
+            // $modelVerify->barangay_clearance->saveAs('barangayclearance_uploads/' . $modelVerify->barangay_clearance->baseName . '.' . $modelVerify->barangay_clearance->extension);            
+            // $modelVerify->barangay_clearance = $modelVerify->barangay_clearance->name;
+
             $modelVerify->barangay_clearance = UploadedFile::getInstance($modelVerify, 'barangay_clearance');
-            $extension = $modelVerify->barangay_clearance->extension;
-            $modelVerify->barangay_clearance->saveAs('barangayclearance_uploads/' . $modelVerify->barangay_clearance->baseName . '.' . $modelVerify->barangay_clearance->extension);            
-            $modelVerify->barangay_clearance = $modelVerify->barangay_clearance->name;
+            if(!empty($modelVerify->barangay_clearance)){
+                $extension = $modelVerify->barangay_clearance->extension;
+                $modelVerify->barangay_clearance->saveAs('barangayclearance_uploads/' . $modelVerify->barangay_clearance->baseName . '.' . $modelVerify->barangay_clearance->extension);            
+                $modelVerify->barangay_clearance = $modelVerify->barangay_clearance->name;
+            }else{                
+                
+            }
 
             //zoning clearance
-            $modelVerify->zoning_clearance = UploadedFile::getInstance($modelVerify, 'zoning_clearance');
-            $extension = $modelVerify->zoning_clearance->extension;
-            $modelVerify->zoning_clearance->saveAs('zoningclearance_uploads/' . $modelVerify->zoning_clearance->baseName . '.' . $modelVerify->zoning_clearance->extension);            
-            $modelVerify->zoning_clearance = $modelVerify->zoning_clearance->name;
+            // $modelVerify->zoning_clearance = UploadedFile::getInstance($modelVerify, 'zoning_clearance');
+            // $modelVerify = $modelVerify->zoning_clearance->extension;
+            // $modelVerify->zoning_clearance->saveAs('zoningclearance_uploads/' . $modelVerify->zoning_clearance->baseName . '.' . $modelVerify->zoning_clearance->extension);            
+            // $modelVerify->zoning_clearance = $modelVerify->zoning_clearance->name;
+            
+                $modelVerify->zoning_clearance = UploadedFile::getInstance($modelVerify, 'zoning_clearance');
+            if(!empty($modelVerify->zoning_clearance)){
+                $extension = $modelVerify->zoning_clearance->extension;
+                $modelVerify->zoning_clearance->saveAs('    /' . $modelVerify->zoning_clearance->baseName . '.' . $modelVerify->zoning_clearance->extension);            
+                $modelVerify->zoning_clearance = $modelVerify->zoning_clearance->name;
+            }else{
+                
+            }
 
             //sanitary clearance
+            // $modelVerify->sanitary_clearance = UploadedFile::getInstance($modelVerify, 'sanitary_clearance');
+            // $extension = $modelVerify->sanitary_clearance->extension;
+            // $modelVerify->sanitary_clearance->saveAs('sanitaryclearance_uploads/' . $modelVerify->sanitary_clearance->baseName . '.' . $modelVerify->sanitary_clearance->extension);            
+            // $modelVerify->sanitary_clearance = $modelVerify->sanitary_clearance->name;
+
             $modelVerify->sanitary_clearance = UploadedFile::getInstance($modelVerify, 'sanitary_clearance');
-            $extension = $modelVerify->sanitary_clearance->extension;
-            $modelVerify->sanitary_clearance->saveAs('sanitaryclearance_uploads/' . $modelVerify->sanitary_clearance->baseName . '.' . $modelVerify->sanitary_clearance->extension);            
-            $modelVerify->sanitary_clearance = $modelVerify->sanitary_clearance->name;            
+            if(!empty($modelVerify->sanitary_clearance)){
+                $extension = $modelVerify->sanitary_clearance->extension;
+                $modelVerify->sanitary_clearance->saveAs('sanitaryclearance_uploads/' . $modelVerify->sanitary_clearance->baseName . '.' . $modelVerify->sanitary_clearance->extension);            
+                $modelVerify->sanitary_clearance = $modelVerify->sanitary_clearance->name;
+            }else{            
+                                
+            }
 
             //occupancy permit
-            $modelVerify->occupancy_permit = UploadedFile::getInstance($modelVerify, 'occupancy_permit');
-            $extension = $modelVerify->occupancy_permit->extension;
-            $modelVerify->occupancy_permit->saveAs('occupancypermit_uploads/' . $modelVerify->occupancy_permit->baseName . '.' . $modelVerify->occupancy_permit->extension);            
-            $modelVerify->occupancy_permit = $modelVerify->occupancy_permit->name;
+            // $modelVerify->occupancy_permit = UploadedFile::getInstance($modelVerify, 'occupancy_permit');
+            // $extension = $modelVerify->occupancy_permit->extension;
+            // $modelVerify->occupancy_permit->saveAs('occupancypermit_uploads/' . $modelVerify->occupancy_permit->baseName . '.' . $modelVerify->occupancy_permit->extension);            
+            // $modelVerify->occupancy_permit = $modelVerify->occupancy_permit->name;
+            
+                $modelVerify->occupancy_permit = UploadedFile::getInstance($modelVerify, 'occupancy_permit');
+                if(!empty($modelVerify->occupancy_permit)){
+                    $extension = $modelVerify->occupancy_permit->extension;
+                    $modelVerify->occupancy_permit->saveAs('occupancypermit_uploads/' . $modelVerify->occupancy_permit->baseName . '.' . $modelVerify->occupancy_permit->extension);            
+                    $modelVerify->occupancy_permit = $modelVerify->occupancy_permit->name;    
+                }else{
+
+                }
+
 
             //fire safety
-            $modelVerify->fire_safety = UploadedFile::getInstance($modelVerify, 'fire_safety');
-            $extension = $modelVerify->fire_safety->extension;
-            $modelVerify->fire_safety->saveAs('firesafety_uploads/' . $modelVerify->fire_safety->baseName . '.' . $modelVerify->fire_safety->extension);            
-            $modelVerify->fire_safety = $modelVerify->fire_safety->name;
+            // $modelVerify->fire_safety = UploadedFile::getInstance($modelVerify, 'fire_safety');
+            // $extension = $modelVerify->fire_safety->extension;
+            // $modelVerify->fire_safety->saveAs('firesafety_uploads/' . $modelVerify->fire_safety->baseName . '.' . $modelVerify->fire_safety->extension);            
+            // $modelVerify->fire_safety = $modelVerify->fire_safety->name;
+
+             $modelVerify->fire_safety = UploadedFile::getInstance($modelVerify, 'fire_safety');
+            if(!empty($modelVerify->fire_safety)){
+                $extension = $modelVerify->fire_safety->extension;
+                $modelVerify->fire_safety->saveAs('firesafety_uploads/' . $modelVerify->fire_safety->baseName . '.' . $modelVerify->fire_safety->extension);            
+                $modelVerify->fire_safety = $modelVerify->fire_safety->name;
+            }else{
+                           
+            }
+            
 
             if(trim($barangay_clearance_status, " ") == 'Pending' && trim($modelVerify->barangay_clearance_status, " ") == 'Approved'){
                 $modelVerify->barangay_clearance_received_by = $modelVerify->received_by;

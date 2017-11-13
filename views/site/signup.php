@@ -21,8 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			<h2> Basic Information </h2>
 			<?= $form->field($model, 'taxpayer_email_add') ?>
 			<?= $form->field($model, 'taxpayer_username') ?>
-			<?= $form->field($model, 'taxpayer_password')->passwordInput() ?>
-			<?= $form->field($model, 'taxpayer_confirm_password')->passwordInput() ?>
+			<?= $form->field($model, 'taxpayer_password')->passwordInput() ?>		  
 			<?= $form->field($model, 'taxpayer_fname') ?>
 			<?= $form->field($model, 'taxpayer_mname') ?>
 			<?= $form->field($model, 'taxpayer_lname') ?>
@@ -116,7 +115,3 @@ $this->params['breadcrumbs'][] = $this->title;
 	    <?php ActiveForm::end(); ?>
 	</div>
 </div>
-
-
-
-

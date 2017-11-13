@@ -78,6 +78,20 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->field($model, 'bfp_fee_pnl')->textInput() ?>
 
+    <?= $form->field($model, 'business_tax')->textInput() ?>
+
+    <?= $form->field($model, 'environmental_fee')->textInput() ?>
+
+    <?= $form->field($model, 'business_plate')->textInput() ?>
+
+    <?= $form->field($model, 'liquor')->textInput() ?>
+
+    <?= $form->field($model, 'tobacco')->textInput() ?>
+
+    <?= $form->field($model, 'health_card')->textInput() ?>
+
+    <?= $form->field($model, 'medical_fee')->textInput() ?>
+
     <?php echo $form->field($model, 'assessment_date_month')->dropDownList(['January' => 'January',
                                                                             'February' => 'February',
                                                                             'March' => 'March',

@@ -101,7 +101,7 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {                    
 
             // $modelTransaction = new Transaction();
             // date_default_timezone_set('Asia/Manila');

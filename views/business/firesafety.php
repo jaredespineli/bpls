@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\helpers\Url;
 use app\models\Business;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\TaxDeclarationSearch */
+/* @var $searchModel app\models\Business */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Fire Safety Inspection Certificate';

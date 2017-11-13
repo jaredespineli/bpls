@@ -247,8 +247,8 @@ class RenewalController extends Controller
                 ->where(['business_id' => $model->business_id])
                 ->one();
 
-            $modelBusiness->isActive = 1;
-            $modelBusiness->save();
+            // $modelBusiness->isActive = 1;
+            // $modelBusiness->save();
             $model->business_status = "Active";
             $model->renewal_status = "Approved";
             $model->save();
@@ -280,21 +280,6 @@ class RenewalController extends Controller
             ]);
     }
 
-    // public function renew_status($id){
-    //         $model = Renewal::find()
-    //             ->where(['renewal_id' => $id])
-    //             ->one();
-
-    //         $modelBusiness =  Business::find()
-    //             ->where(['business_id' => $model->business_id])
-    //             ->one();
-
-    //         $modelBusiness->isActive = 1;
-    //         $modelBusiness->save();
-    //         $model->business_status = "Active";
-    //         $model->renewal_status = "Approved";
-    //         $model->save();
-    // }
 
     /**
      * Finds the Renewal model based on its primary key value.

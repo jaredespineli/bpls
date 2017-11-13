@@ -23,6 +23,7 @@ use Yii;
  * @property integer $account_holder_id
  * @property integer $business_id
  * @property string $business_name
+ * @property string $isActive
  *
  * @property Business $business
  */
@@ -43,7 +44,7 @@ class Approval extends \yii\db\ActiveRecord
     {
         return [
             [['action_date', 'approval_date', 'issue_date', 'sys_entry_date'], 'safe'],
-            [['account_holder_id', 'business_id', 'next_renewal_date'], 'integer'],
+            [['account_holder_id', 'business_id', 'next_renewal_date', 'isActive'], 'integer'],
             [['business_id'], 'required'],
             [['sic_code', 'property_index_code', 'postal_code', 'full_business_name', 'remarks', 'approval_status', 'business_reg_num', 'business_name'], 'string', 'max' => 255],
             [['business_id'], 'exist', 'skipOnError' => true, 'targetClass' => Business::className(), 'targetAttribute' => ['business_id' => 'business_id']],
@@ -72,6 +73,7 @@ class Approval extends \yii\db\ActiveRecord
             'account_holder_id' => 'Account Holder ID',
             'business_id' => 'Business ID',
             'business_name' => 'Business Name',
+            'isActive' => 'Business Status'
         ];
     }
 

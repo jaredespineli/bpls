@@ -127,7 +127,7 @@ class Business extends \yii\db\ActiveRecord
             'others_three_barcode' => 'Others Three Barcode',
             'others_four_barcode' => 'Others Four Barcode',
             'tax_payment_type' => 'Tax Payment Type',
-            'status' => 'Status',
+            //'status' => 'Status',
             'full_address' => 'Full Address',
             'pay_mode' => 'Pay Mode',
             'postal_code' => 'Postal Code',

@@ -203,6 +203,9 @@ class ApprovalController extends \yii\web\Controller
         $model = $this->findModel($id); 
 
         if($model->load(Yii::$app->request->post())){
+            //$modelBusiness->isActive = 1;
+            //$modelBusiness->save();
+            $model->isActive = 1;
             $model->save();
         }    
 

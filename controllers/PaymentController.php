@@ -56,6 +56,7 @@ class PaymentController extends Controller
 
         $searchModel = new PaymentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize = 5; 
         $dataProvider->query->andWhere(['payment_quarter'=> 0]);
 
         return $this->render('index', [
@@ -276,12 +277,15 @@ class PaymentController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())){
-            $model->officialreceipt = UploadedFile::getInstance($model, 'officialreceipt');
 
-            $extension = $model->officialreceipt->extension;
-            $model->officialreceipt->saveAs('officialreceipt_uploads/' . $model->officialreceipt->baseName . '.' . $model->officialreceipt->extension);
-                
-            $model->officialreceipt = $model->officialreceipt->name;
+            $model->officialreceipt = UploadedFile::getInstance($model, 'officialreceipt');
+            if(!empty($modelVerify->officialreceipt)){
+                $extension = $model->officialreceipt->extension;
+                $model->officialreceipt->saveAs('officialreceipt_uploads/' . $model->officialreceipt->baseName . '.' . $model->officialreceipt->extension);                
+                $model->officialreceipt = $model->officialreceipt->name;
+            }else{
+
+            }
                
             $model->payment_status_per = 'Paid';
             $model->save();
@@ -321,23 +325,7 @@ class PaymentController extends Controller
 
         return $this->render('viewofficialreceipt', ['model' => $model]);
     }
-
-    // public function actionOfficialreceipt($id)
-    // {           
-    //     $model = $this->findModel($id);
-
-    //     $pdf = new Pdf([ 
-    //         'orientation' => Pdf::ORIENT_PORTRAIT,
-    //         'format' => Pdf::FORMAT_A4, 
-    //     ]);
-    
-    //     $pdf->content = $this->renderPartial('officialreceipt', [
-    //         'model' => $model,
-    //     ]);
-
-    //     return $pdf->render();
-
-    // }
+   
 
     /**
      * Finds the Payment model based on its primary key value.

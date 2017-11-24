@@ -18,9 +18,10 @@ class BusinessSearch extends Business
     public function rules()
     {
         return [
-            [['user_id', 'lessor_business_id', 'employee_count', 'isActive', 'sys_entry_date_year'], 'integer'],
+            [['user_id', 'lessor_business_id', 'employee_count', 'isActive', 'permit_no'], 'integer'],
             [['capital_amount', 'business_area'], 'number'],
-            [['business_name', 'trade_name', 'president_name', 'org_type', 'ein', 'tin', 'lob_code', 'lob_desc', 'tel_num', 'website_url', 'bldg_num', 'bldg_name', 'unit_num', 'street', 'subdivision', 'barangay', 'property_index_num', 'has_lessor', 'sss_ref', 'sec_ref', 'dti_ref', 'cda_ref', 'fsic_ref', 'application_barcode', 'barangay_barcode', 'zoning_barcode', 'sanitary_barcode', 'occupancy_barcode', 'others_one_barcode', 'others_two_barcode', 'others_three_barcode', 'others_four_barcode', 'tax_payment_type', 'status', 'full_address', 'pay_mode', 'postal_code', 'sys_entry_date_month', 'sys_entry_date_day'], 'string', 'max' => 255],
+            [['sys_entry_date'], 'safe'],
+            [['business_name', 'trade_name', 'president_name', 'org_type', 'ein', 'tin', 'lob_code', 'lob_desc', 'tel_num', 'website_url', 'bldg_num', 'bldg_name', 'unit_num', 'street', 'subdivision', 'barangay', 'property_index_num', 'has_lessor', 'sss_ref', 'sec_ref', 'dti_ref', 'cda_ref', 'fsic_ref', 'application_barcode', 'barangay_barcode', 'zoning_barcode', 'sanitary_barcode', 'occupancy_barcode', 'others_one_barcode', 'others_two_barcode', 'others_three_barcode', 'others_four_barcode', 'tax_payment_type', 'status', 'full_address', 'pay_mode', 'postal_code', 'business_status'], 'string', 'max' => 255],
         ];
     }
 
@@ -66,8 +67,8 @@ class BusinessSearch extends Business
             'lessor_business_id' => $this->lessor_business_id,
             'business_area' => $this->business_area,
             'employee_count' => $this->employee_count,
-            'sys_entry_date_year' => $this->sys_entry_date_year,
-            //'sys_entry_date' => $this->sys_entry_date,
+            //'sys_entry_date_year' => $this->sys_entry_date_year,
+            'sys_entry_date' => $this->sys_entry_date,
         ]);
 
         $query->andFilterWhere(['like', 'business_name', $this->business_name])
@@ -106,9 +107,7 @@ class BusinessSearch extends Business
             ->andFilterWhere(['like', 'status', $this->status])
             ->andFilterWhere(['like', 'full_address', $this->full_address])
             ->andFilterWhere(['like', 'pay_mode', $this->pay_mode])
-            ->andFilterWhere(['like', 'postal_code', $this->postal_code])
-            ->andFilterWhere(['like', 'sys_entry_date_month', $this->postal_code])
-            ->andFilterWhere(['like', 'sys_entry_date_day', $this->postal_code]);            
+            ->andFilterWhere(['like', 'postal_code', $this->postal_code]);            
 
         return $dataProvider;
     }

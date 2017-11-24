@@ -15,6 +15,8 @@ use app\models\Document;
 use app\models\DocumentSearch;
 use app\models\Renewal;
 use app\models\RenewalSearch;
+use app\models\Update;
+use app\models\UpdateSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -76,6 +78,7 @@ class ApprovalController extends \yii\web\Controller
 
         $searchModel = new ApprovalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize = 5; 
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -202,9 +205,7 @@ class ApprovalController extends \yii\web\Controller
 
         $model = $this->findModel($id); 
 
-        if($model->load(Yii::$app->request->post())){
-            //$modelBusiness->isActive = 1;
-            //$modelBusiness->save();
+        if($model->load(Yii::$app->request->post())){            
             $model->isActive = 1;
             $model->save();
         }    
@@ -223,7 +224,7 @@ class ApprovalController extends \yii\web\Controller
 
         $modelDoc =  Document::find()
                 ->where(['business_id' => $modelBusiness->business_id   ])      
-                ->one();
+                ->one();       
 
         return $this->render('status', [
                 'model' => $model,
@@ -241,6 +242,7 @@ class ApprovalController extends \yii\web\Controller
 
         for($i = 0; $i < sizeof($modelBusiness); $i++){
             $modelBusiness[$i]["permit_no"] = $modelBusiness[$i]["permit_no"] + 1;
+            
             $business = Business::find()
                 ->where(['business_id' => $id])
                 ->one();
@@ -254,7 +256,7 @@ class ApprovalController extends \yii\web\Controller
 
         $modelApproval = Approval::find()
             ->where(['business_id' => $id])
-            ->one();
+            ->one();        
 
         $pdf = new Pdf([ 
             'format' => Pdf::FORMAT_LETTER, 
@@ -265,6 +267,7 @@ class ApprovalController extends \yii\web\Controller
         $pdf->content = $this->renderPartial('businesspermit', [
             'model' => $model,
             'modelApproval' => $modelApproval,
+            'modelBusiness' => $modelBusiness,            
         ]);
 
         return $pdf->render();

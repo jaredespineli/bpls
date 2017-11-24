@@ -51,6 +51,7 @@ class UserController extends Controller
 
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize = 5; 
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -105,10 +106,12 @@ class UserController extends Controller
                 $this->layout = 'bplo';
             }
 
-        $model = new User();
+        $model = new User();        
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->user_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->full_name = trim($model->first_name," "). " " .trim($model->middle_name," "). " " .trim($model->last_name," "). " " .trim($model->suffix_name," ");
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->user_id]);            
         } else {
             return $this->render('create', [
                 'model' => $model,

@@ -10,7 +10,7 @@ use app\models\Business;
 
 $this->title = 'Barangay Clearance';
 // $this->params['breadcrumbs'][] = ['label' => 'Business', 'url' => ['index']];
-// $this->params['breadcrumbs'][] = ['label' => 'Business', 'url' => ['verifydoc', 'id' => $model->business]]; 
+//$this->params['breadcrumbs'][] = ['label' => 'Business', 'url' => ['verifydoc', 'id' => $modelBusiness->business_id]]; 
 $this->params['breadcrumbs'][] = $this->title;
 
 $modelBusiness =  Business::find()

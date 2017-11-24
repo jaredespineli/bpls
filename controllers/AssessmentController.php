@@ -55,6 +55,7 @@ class AssessmentController extends Controller
         
         $searchModel = new AssessmentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize = 5; 
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -150,7 +151,7 @@ class AssessmentController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->grand_total = $model->gross_sales_tax_amt + $model->gross_sales_tax_pnl + $model->transport_truck_tax_amt + $model->transport_truck_tax_pnl + $model->hazard_storage_tax_amt + $model->hazard_storage_tax_pnl + $model->sign_billboard_tax_amt + $model->sign_billboard_tax_pnl + $model->mayors_permit_fee_amt + $model->mayors_permit_fee_pnl + $model->garbage_fee_amt + $model->garbage_fee_pnl + $model->truck_van_permit_fee_amt + $model->truck_van_permit_fee_pnl + $model->sanitary_permit_fee_amt + $model->sanitary_permit_fee_pnl + $model->bldg_insp_fee_amt + $model->bldg_insp_fee_pnl + $model->elec_insp_fee_amt + $model->elec_insp_fee_pnl +$model->mech_insp_fee_amt + $model->mech_insp_fee_pnl + $model->plumb_insp_fee_amt + $model->plumb_insp_fee_pnl + $model->sign_billboard_fee_amt + $model->sign_billboard_fee_pnl + $model->sign_billboard_renew_fee_amt + $model->sign_billboard_renew_fee_pnl + $model->hazard_storage_fee_amt + $model->hazard_storage_fee_pnl + $model->bfp_fee_amt + $model->bfp_fee_pnl;
+            $model->grand_total = $model->gross_sales_tax_amt + $model->gross_sales_tax_pnl + $model->transport_truck_tax_amt + $model->transport_truck_tax_pnl + $model->hazard_storage_tax_amt + $model->hazard_storage_tax_pnl + $model->sign_billboard_tax_amt + $model->sign_billboard_tax_pnl + $model->mayors_permit_fee_amt + $model->mayors_permit_fee_pnl + $model->garbage_fee_amt + $model->garbage_fee_pnl + $model->truck_van_permit_fee_amt + $model->truck_van_permit_fee_pnl + $model->sanitary_permit_fee_amt + $model->sanitary_permit_fee_pnl + $model->bldg_insp_fee_amt + $model->bldg_insp_fee_pnl + $model->elec_insp_fee_amt + $model->elec_insp_fee_pnl +$model->mech_insp_fee_amt + $model->mech_insp_fee_pnl + $model->plumb_insp_fee_amt + $model->plumb_insp_fee_pnl + $model->sign_billboard_fee_amt + $model->sign_billboard_fee_pnl + $model->sign_billboard_renew_fee_amt + $model->sign_billboard_renew_fee_pnl + $model->hazard_storage_fee_amt + $model->hazard_storage_fee_pnl + $model->bfp_fee_amt + $model->bfp_fee_pnl + $model->business_tax + $model->environmental_fee + $model->business_plate + $model->liquor + $model->tobacco + $model->health_card + $model->medical_fee;
             $model->save();
 
             $model_payment_unpaid =  Payment::find()

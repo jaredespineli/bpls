@@ -55,10 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'hazard_storage_fee_pnl',
             'bfp_fee_amt',
             'bfp_fee_pnl',
-            //'assessment_date',
-            'assessment_date_month',
-            'assessment_date_day',
-            'assessment_date_year',
+            'assessment_date',
             'grand_total',
         ],
     ]) ?>

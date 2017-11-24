@@ -17,6 +17,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Payment */
@@ -63,9 +64,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>    
     <br>
     <br>
-    <?= $form->field($model, 'or_number')->textInput(['value' => $model->or_number]) ?>
-    <?= $form->field($model, 'date')->textInput(['value' => $model->date]) ?>
-    <?= $form->field($model, 'received_by')->textInput(['value' => $model->received_by]) ?>
+    <?= $form->field($model, 'or_number')->textInput(['value' => $model->or_number]) ?>    
+    <?php echo $form->field($model, 'date')->widget(DatePicker::classname(), [
+        'options' => ['placeholder' => 'Enter payment date ...'],
+        'pluginOptions' => [
+            'autoclose'=>true
+        ]
+      ]); ?>
+    <?= $form->field($model, 'received_by')->textInput(['readonly' => true, 'value' => trim(Yii::$app->user->identity->full_name, " ")]) ?>
     <?= $form->field($model, 'officialreceipt')->fileInput() ?>
 
     <div class="form-group">

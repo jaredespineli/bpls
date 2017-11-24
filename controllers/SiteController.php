@@ -103,13 +103,6 @@ class SiteController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {                    
 
-            // $modelTransaction = new Transaction();
-            // date_default_timezone_set('Asia/Manila');
-            // $modelTransaction->date_time = date('Y-m-d H:i:s');
-            // $modelTransaction->user = $model->username;
-            // $modelTransaction->message = 'Login';
-            // $modelTransaction->save();
-
             return $this->goBack();
         }
 
@@ -130,8 +123,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->save();
 
-            $modeluser = new User();
-            //$modeluser->user_id = $model->user_id;
+            $modeluser = new User();            
             $modeluser->username = $model->taxpayer_username;
             $modeluser->password = $model->taxpayer_password;
             $modeluser->first_name = $model->taxpayer_fname;
@@ -210,13 +202,7 @@ class SiteController extends Controller
                         Yii::$app->getSession()->setFlash(
                             'success','Password changed'
                         );
-
-                        // $modelTransaction = new Transaction();
-                        // date_default_timezone_set('Asia/Manila');
-                        // $modelTransaction->date_time = date('Y-m-d H:i:s');
-                        // $modelTransaction->user = Yii::$app->user->identity->username;
-                        // $modelTransaction->message = 'Change Password';
-                        // $modelTransaction->save();
+                   
 
                         return $this->redirect(['index']);
                     }else{

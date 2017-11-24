@@ -51,6 +51,7 @@ class DocumentController extends Controller
 
         $searchModel = new DocumentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize = 5; 
 
         return $this->render('index', [
             'searchModel' => $searchModel,

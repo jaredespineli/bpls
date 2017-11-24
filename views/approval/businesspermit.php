@@ -6,12 +6,14 @@ use kartik\widgets\FileInput;
 use kartik\mpdf\Pdf;
 use app\models\Assessment;
 use app\models\Payment;
+use app\models\Business;
+use app\models\Approval;
 
 ?>
 
 <div class="business-permit">
     <table style= "font-family: \"Times New Roman\", Times, serif;
-        border-collapse: collapse;
+        border-collapse: collapse;        
         width: 100%;
         font-size: 12px;" >
 
@@ -26,9 +28,9 @@ use app\models\Payment;
         <td colspan="5"><br style="visibility:hidden"></td>
     </tr>
     <tr>
-        <td colspan="2"><br style="visibility:hidden"></td>
-        <td colspan="2"><center><strong>MUNICIPALITY OF INDANG</strong></center></td>
-        <td colspan="5"><br style="visibility:hidden"></td>
+        <td colspan="2" style="background-color: #3232ff;"><br style="visibility:hidden"></td>
+        <td colspan="2" style="background-color: #3232ff; font color: white;"><center><strong><h4>MUNICIPALITY OF INDANG</h4><strong></center></td>
+        <td colspan="5" style="background-color: #3232ff;"><br style="visibility:hidden"></td>
     </tr>
     <tr>
         <td colspan="10"><br style="visibility:hidden"></td>
@@ -68,7 +70,7 @@ use app\models\Payment;
     </tr>
     <tr>
         <td colspan="1"><br style="visibility:hidden"></td>
-        <td colspan="6"><center><strong>MAYOR'S PERMIT</strong></center></td>
+        <td colspan="6" style = "font color: green;"><center><h3><strong>MAYOR'S PERMIT</strong></h3></center></td>
         <td colspan="3"><br style="visibility:hidden"></td> 
     </tr>
     <tr>
@@ -76,7 +78,7 @@ use app\models\Payment;
     </tr>
     <tr>
         <td colspan="1"><br style="visibility:hidden"></td>
-        <td colspan="7">Pursuant to Chapter III, Article A. of the Revised Code of Indang, Cavite,</td>
+        <td colspan="7"><center>Pursuant to Chapter III, Article A. of the Revised Code of Indang, Cavite,</center></td>
         <td colspan="2"><br style="visibility:hidden"></td>
     </tr>
      <tr>
@@ -105,7 +107,7 @@ use app\models\Payment;
     </tr>
     <tr>
         <td colspan="2"><br style="visibility:hidden"></td>
-        <td colspan="3" style="border-bottom: 1px solid;"><center><?php echo $model->full_address ?></center></td>
+        <td colspan="3" style="border-bottom: 1px solid;"><center><?php echo $model->full_address = $model->bldg_num . ' ' .$model->bldg_name . ' ' .$model->unit_num . ' ' .$model->street . ' ' .$model->subdivision . ' ' .$model->barangay . ', ' ."Indang, Cavite"?></center></td>
         <td colspan="5"><br style="visibility:hidden"></td>
     </tr>
     <tr>
@@ -160,11 +162,8 @@ use app\models\Payment;
         <td colspan="10"><br style="visibility:hidden"></td>
     </tr>
     <tr>
-        <td colspan="10"><br style="visibility:hidden"></td>
-    </tr>
-    <tr>
         <td colspan="4"><br style="visibility:hidden"></td>
-        <td colspan="3"><center>PERFECTO V. FIDEL</center></td> 
+        <td colspan="3" style = "background-image: img/seal.png"><center><?php echo $model->mayor_name?></center></td> 
         <td colspan="3"><br style="visibility:hidden"></td>
     </tr>
     <tr>
@@ -173,4 +172,10 @@ use app\models\Payment;
         <td colspan="3"><br style="visibility:hidden"></td>
     </tr>
     </table>
+</div>
+<br>
+<div style="text-align: center; background-color: #3232ff; font color: white; padding-top:7px" class = "footer">
+    <p><strong>THIS PERMIT SHALL BE POSTED CONSPICUOUSLY WITHIN THE ESTABLISHMENT</strong></p>
+    <p><strong>WHERE SUCH BUSINESS IS BEING CONDUCTED AND SHALL BE PRESENTED</strong></p>
+    <p><strong>TO COMPETENT AUTHORITY UPON DEMAND.</strong></p>
 </div>

@@ -17,6 +17,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Business;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Payment */
@@ -82,8 +83,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <br>
     <br>
 
-        <?= $form->field($modelVerify, 'received_by')->textInput(['maxlength' => true]) ?>
-        <?= $form->field($modelVerify, 'date')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($modelVerify, 'received_by')->textInput(['readonly' => true, 'value' => trim(Yii::$app->user->identity->full_name, " ")]) ?>
+
+        <?php echo $form->field($modelVerify, 'date')->widget(DatePicker::classname(), [
+            'options' => ['placeholder' => 'Enter approval date ...'],
+            'pluginOptions' => [
+                'autoclose'=>true
+            ]
+        ]); ?>
         
 
         <div class="form-group">

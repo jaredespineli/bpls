@@ -54,12 +54,16 @@ class BusinessController extends Controller
                 $this->layout = 'bplo';
             }
 
+
         $searchModel = new BusinessSearch();
+
         if(trim(Yii::$app->user->identity->user_type, " ") == 'Taxpayer'){
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $dataProvider->pagination->pageSize = 5;                    
             $dataProvider->query->andWhere(['user_id'=> Yii::$app->user->identity->user_id]);
         }else{
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $dataProvider->pagination->pageSize = 5;
         }
         
 
@@ -117,13 +121,22 @@ class BusinessController extends Controller
             }
 
         $model = new Business();
+        $modelType =  Yii::$app->db->createCommand('SELECT * from businesstype')
+            ->queryAll();
+
+        $modelBusinessType = array();
+
+        for($i = 0; $i < sizeof($modelType); $i++){
+            $modelBusinessType[] = $modelType[$i]["org_type"];
+            //$modelBusinessType[$i][] = $modelType[$i]["org_type"];
+        } 
 
         if ($model->load(Yii::$app->request->post()) ) {
             $model->user_id = Yii::$app->user->identity->user_id;
             $model->isActive = 1;
 
             $modelBusiness =  Yii::$app->db->createCommand('SELECT * from business')
-                    ->queryAll();
+                    ->queryAll();            
 
             if(sizeof($modelBusiness) == 0){
                 $model->permit_no = 1;
@@ -166,14 +179,13 @@ class BusinessController extends Controller
                 $modelRenew->business_status = "Inactive";
             }
            
-            $modelRenew->save();
-
-
+            $modelRenew->save();       
 
             return $this->redirect(['view', 'id' => $model->business_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'modelBusinessType' => $modelBusinessType,
             ]);
         }
     }
@@ -201,14 +213,23 @@ class BusinessController extends Controller
             }
 
         $model = $this->findModel($id);
+        $modelType =  Yii::$app->db->createCommand('SELECT * from businesstype')
+            ->queryAll(); 
+
+        $modelBusinessType = array();
+
+        for($i = 0; $i < sizeof($modelType); $i++){
+          array_push($modelBusinessType, $modelType[$i]["org_type"]);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->business_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'modelBusinessType' => $modelBusinessType,
             ]);
-        }
+        }        
     }
 
     /**
@@ -318,12 +339,6 @@ class BusinessController extends Controller
         $fire_safety_status = $modelVerify->fire_safety_status;
 
        if ($modelVerify->load(Yii::$app->request->post())) {  
-            //barangay clearance
-            // $modelVerify->barangay_clearance = UploadedFile::getInstance($modelVerify, 'barangay_clearance');
-            // $extension = $modelVerify->barangay_clearance->extension;
-            // $modelVerify->barangay_clearance->saveAs('barangayclearance_uploads/' . $modelVerify->barangay_clearance->baseName . '.' . $modelVerify->barangay_clearance->extension);            
-            // $modelVerify->barangay_clearance = $modelVerify->barangay_clearance->name;
-
             $modelVerify->barangay_clearance = UploadedFile::getInstance($modelVerify, 'barangay_clearance');
             if(!empty($modelVerify->barangay_clearance)){
                 $extension = $modelVerify->barangay_clearance->extension;
@@ -332,14 +347,8 @@ class BusinessController extends Controller
             }else{                
                 
             }
-
-            //zoning clearance
-            // $modelVerify->zoning_clearance = UploadedFile::getInstance($modelVerify, 'zoning_clearance');
-            // $modelVerify = $modelVerify->zoning_clearance->extension;
-            // $modelVerify->zoning_clearance->saveAs('zoningclearance_uploads/' . $modelVerify->zoning_clearance->baseName . '.' . $modelVerify->zoning_clearance->extension);            
-            // $modelVerify->zoning_clearance = $modelVerify->zoning_clearance->name;
             
-                $modelVerify->zoning_clearance = UploadedFile::getInstance($modelVerify, 'zoning_clearance');
+            $modelVerify->zoning_clearance = UploadedFile::getInstance($modelVerify, 'zoning_clearance');
             if(!empty($modelVerify->zoning_clearance)){
                 $extension = $modelVerify->zoning_clearance->extension;
                 $modelVerify->zoning_clearance->saveAs('    /' . $modelVerify->zoning_clearance->baseName . '.' . $modelVerify->zoning_clearance->extension);            
@@ -347,12 +356,6 @@ class BusinessController extends Controller
             }else{
                 
             }
-
-            //sanitary clearance
-            // $modelVerify->sanitary_clearance = UploadedFile::getInstance($modelVerify, 'sanitary_clearance');
-            // $extension = $modelVerify->sanitary_clearance->extension;
-            // $modelVerify->sanitary_clearance->saveAs('sanitaryclearance_uploads/' . $modelVerify->sanitary_clearance->baseName . '.' . $modelVerify->sanitary_clearance->extension);            
-            // $modelVerify->sanitary_clearance = $modelVerify->sanitary_clearance->name;
 
             $modelVerify->sanitary_clearance = UploadedFile::getInstance($modelVerify, 'sanitary_clearance');
             if(!empty($modelVerify->sanitary_clearance)){
@@ -362,30 +365,17 @@ class BusinessController extends Controller
             }else{            
                                 
             }
-
-            //occupancy permit
-            // $modelVerify->occupancy_permit = UploadedFile::getInstance($modelVerify, 'occupancy_permit');
-            // $extension = $modelVerify->occupancy_permit->extension;
-            // $modelVerify->occupancy_permit->saveAs('occupancypermit_uploads/' . $modelVerify->occupancy_permit->baseName . '.' . $modelVerify->occupancy_permit->extension);            
-            // $modelVerify->occupancy_permit = $modelVerify->occupancy_permit->name;
             
-                $modelVerify->occupancy_permit = UploadedFile::getInstance($modelVerify, 'occupancy_permit');
-                if(!empty($modelVerify->occupancy_permit)){
-                    $extension = $modelVerify->occupancy_permit->extension;
-                    $modelVerify->occupancy_permit->saveAs('occupancypermit_uploads/' . $modelVerify->occupancy_permit->baseName . '.' . $modelVerify->occupancy_permit->extension);            
-                    $modelVerify->occupancy_permit = $modelVerify->occupancy_permit->name;    
-                }else{
+            $modelVerify->occupancy_permit = UploadedFile::getInstance($modelVerify, 'occupancy_permit');
+            if(!empty($modelVerify->occupancy_permit)){
+                $extension = $modelVerify->occupancy_permit->extension;
+                $modelVerify->occupancy_permit->saveAs('occupancypermit_uploads/' . $modelVerify->occupancy_permit->baseName . '.' . $modelVerify->occupancy_permit->extension);            
+                $modelVerify->occupancy_permit = $modelVerify->occupancy_permit->name;    
+            }else{
 
-                }
+            }
 
-
-            //fire safety
-            // $modelVerify->fire_safety = UploadedFile::getInstance($modelVerify, 'fire_safety');
-            // $extension = $modelVerify->fire_safety->extension;
-            // $modelVerify->fire_safety->saveAs('firesafety_uploads/' . $modelVerify->fire_safety->baseName . '.' . $modelVerify->fire_safety->extension);            
-            // $modelVerify->fire_safety = $modelVerify->fire_safety->name;
-
-             $modelVerify->fire_safety = UploadedFile::getInstance($modelVerify, 'fire_safety');
+            $modelVerify->fire_safety = UploadedFile::getInstance($modelVerify, 'fire_safety');
             if(!empty($modelVerify->fire_safety)){
                 $extension = $modelVerify->fire_safety->extension;
                 $modelVerify->fire_safety->saveAs('firesafety_uploads/' . $modelVerify->fire_safety->baseName . '.' . $modelVerify->fire_safety->extension);            
@@ -532,7 +522,7 @@ class BusinessController extends Controller
     }
 
     public function actionFiresafety($id){
-         $user_type = trim(Yii::$app->user->identity->user_type, " ");
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
 
         if($user_type == 'Admin'){
             $this->layout = 'admin';                
@@ -553,6 +543,47 @@ class BusinessController extends Controller
 
         return $this->render('firesafety', ['model' => $model]);
     }
+
+    public function actionUpdateinfo(){
+        $user_type = trim(Yii::$app->user->identity->user_type, " ");
+
+        if($user_type == 'Admin'){
+            $this->layout = 'admin';                
+        }else if($user_type === 'Assessor'){
+            $this->layout = 'assessor';
+        }else if($user_type === 'Treasurer'){
+            $this->layout = 'treasurer';
+        }else if ($user_type === 'Taxpayer'){
+            $this->layout = 'taxpayer';
+        }else if ($user_type === 'BPLO'){
+                $this->layout = 'bplo';
+        }       
+    
+    $modelUpdate =  Yii::$app->db->createCommand('SELECT * from business')
+            ->queryAll();
+
+    $model = Business::find()                
+                ->where(['business_id' => $modelUpdate[0]["business_id"]])
+                ->one();
+
+    if ($model->load(Yii::$app->request->post()) ) {                             
+        for($i = 1; $i < sizeof($modelUpdate); $i++){            
+            $update = Business::find()                
+                ->where(['business_id' => $modelUpdate[$i]["business_id"]])
+                ->one();    
+
+            $update->mayor_name = $model->mayor_name;           
+            $update->save();                         
+        }
+
+        $model->save();
+    }
+
+    return $this->render('updateinfo', [
+                'model' => $model,
+                'modelUpdate' => $modelUpdate,
+            ]);     
+}
 
 
 

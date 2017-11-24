@@ -103,6 +103,7 @@ class RenewalController extends Controller
 
         $searchModel = new RenewalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize = 5; 
 
         return $this->render('index', [
             'searchModel' => $searchModel,

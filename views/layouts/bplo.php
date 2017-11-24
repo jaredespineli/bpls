@@ -25,12 +25,13 @@ use app\assets\AppAsset;
                         ['label' => 'Manage Business', 'icon' => 'user', 'items' => [
                             ['label' => 'Create Business', 'url' => ['business/index']],
                             ['label' => 'Verify Documents', 'url' => ['business/verify']],
+                            ['label' => 'Verify Documents', 'url' => ['business/updateinfo']],
                         ]],
                         
                         //['label' => 'Manage Assessment', 'icon' => 'user', 'url' =>['assessment/index']],
                         // ['label' => 'Manage Payment', 'icon' => 'user', 'url' =>['payment/index']],
                         ['label' => 'Approval', 'icon' => 'user', 'url' =>['approval/index']],
-                        ['label' => 'Renewal', 'icon' => 'user', 'url' =>['renewal/index']],
+                        ['label' => 'Renewal', 'icon' => 'user', 'url' =>['renewal/index']],                        
 
                     ]
                 ]);

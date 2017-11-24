@@ -120,16 +120,7 @@ class BusinessController extends Controller
                 $this->layout = 'bplo';
             }
 
-        $model = new Business();
-        $modelType =  Yii::$app->db->createCommand('SELECT * from businesstype')
-            ->queryAll();
-
-        $modelBusinessType = array();
-
-        for($i = 0; $i < sizeof($modelType); $i++){
-            $modelBusinessType[] = $modelType[$i]["org_type"];
-            //$modelBusinessType[$i][] = $modelType[$i]["org_type"];
-        } 
+        $model = new Business();       
 
         if ($model->load(Yii::$app->request->post()) ) {
             $model->user_id = Yii::$app->user->identity->user_id;
@@ -184,8 +175,7 @@ class BusinessController extends Controller
             return $this->redirect(['view', 'id' => $model->business_id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
-                'modelBusinessType' => $modelBusinessType,
+                'model' => $model,                
             ]);
         }
     }
@@ -213,21 +203,12 @@ class BusinessController extends Controller
             }
 
         $model = $this->findModel($id);
-        $modelType =  Yii::$app->db->createCommand('SELECT * from businesstype')
-            ->queryAll(); 
-
-        $modelBusinessType = array();
-
-        for($i = 0; $i < sizeof($modelType); $i++){
-          array_push($modelBusinessType, $modelType[$i]["org_type"]);
-        }
-
+                
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->business_id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
-                'modelBusinessType' => $modelBusinessType,
+                'model' => $model,                
             ]);
         }        
     }

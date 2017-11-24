@@ -26,6 +26,7 @@ use app\assets\AppAsset;
                             ['label' => 'Create Business', 'url' => ['business/index']],
                             ['label' => 'Verify Documents', 'url' => ['business/verify']],
                             ['label' => 'Update Business Information', 'url' => ['business/updateinfo']],
+                            ['label' => 'Add Business Type', 'url' => ['businesstype/index']],
                         ]],
                         
                         ['label' => 'Manage Assessment', 'icon' => 'user', 'url' =>['assessment/index']],

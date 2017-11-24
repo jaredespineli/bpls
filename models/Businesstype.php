@@ -26,8 +26,6 @@ class Businesstype extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['businesstype_id'], 'required'],
-            [['businesstype_id'], 'integer'],
             [['org_type'], 'string', 'max' => 255],
         ];
     }

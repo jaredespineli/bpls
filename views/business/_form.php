@@ -1,9 +1,11 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
-use kartik\select2\Select2;
 use yii\bootstrap\ActiveForm;
+use kartik\select2\Select2;
+use app\models\BusinessType;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Business */
@@ -16,19 +18,14 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->field($model, 'business_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'trade_name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'trade_name')->dropDownList(
+        ArrayHelper::map(BusinessType::find()->all(), 'businesstype_id', 'org_type'),
+        ['prompt' => 'Select Business Type']
+    )?>
 
     <?= $form->field($model, 'president_name')->textInput(['maxlength' => true]) ?>
-
-   
-    <?php echo $form->field($model, 'org_type')->widget(Select2::classname(), [
-        'data' => $modelBusinessType,
-        'options' => ['placeholder' => 'Select a business type ...'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]);
-    ?>
+    
+    <?= $form->field($model, 'org_type')->textInput(['maxlength' => true]) ?>    
 
     <?= $form->field($model, 'ein')->textInput(['maxlength' => true]) ?>
 

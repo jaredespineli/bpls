@@ -24,12 +24,12 @@ use app\models\Approval;
     </tr>
     <tr>
         <td colspan="2"><br style="visibility:hidden"></td>
-        <td colspan="2"><center><strong>PROVINCE OF CAVITE</strong></center></td>
+        <td colspan="2"><center><strong><h4>PROVINCE OF CAVITE</h4></strong></center></td>
         <td colspan="5"><br style="visibility:hidden"></td>
     </tr>
     <tr>
         <td colspan="2" style="background-color: #3232ff;"><br style="visibility:hidden"></td>
-        <td colspan="2" style="background-color: #3232ff; font color: white;"><center><strong><h4>MUNICIPALITY OF INDANG</h4><strong></center></td>
+        <td colspan="2" style="background-color: #3232ff; font color: white"><center><strong><h4>MUNICIPALITY OF INDANG</h4><strong></center></td>
         <td colspan="5" style="background-color: #3232ff;"><br style="visibility:hidden"></td>
     </tr>
     <tr>
@@ -163,13 +163,16 @@ use app\models\Approval;
     </tr>
     <tr>
         <td colspan="4"><br style="visibility:hidden"></td>
-        <td colspan="3" style = "background-image: img/seal.png"><center><?php echo $model->mayor_name?></center></td> 
+        <td colspan="3"><center><?php echo $model->mayor_name?></center></td> 
         <td colspan="3"><br style="visibility:hidden"></td>
     </tr>
     <tr>
         <td colspan="4"><br style="visibility:hidden"></td>
         <td colspan="3"><center>Municipal Mayor</center></td> 
         <td colspan="3"><br style="visibility:hidden"></td>
+    </tr>
+    <tr>
+        <td colspan="15"><br style="visibility:hidden"></td>
     </tr>
     </table>
 </div>
